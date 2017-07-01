@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="scut.luluteam.gutils">
+
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="21" />
+
+    <!-- 有Camera，并且可以自动聚焦的设备 -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- 悬浮窗 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <!-- 点亮屏幕 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
+    <application
+        android:allowBackup="true"
+        android:name=".app.App"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <service
+            android:name=".service.Down_UploadService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.floatwindow.FloatWindowService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.mqtt.MQTTService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- 用于接收“屏幕解锁”、“申请管理员权限”的广播接收 -->
+        <receiver
+            android:name=".utils.lock_screen.ScreenReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/lock_screen" />
+
+            <intent-filter>
+
+                <!-- 申请管理员权限 -->
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <!-- 解锁 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+
+        <activity
+            android:name=".service.floatwindow.FloatWinPermissionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".utils.screen_shot.ScreenShotActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+        <service
+            android:name=".service.media.RecordService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.floatwindow.FloatWindowSimpleService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.floatwindow.FloatWinService"
+            android:enabled="true"
+            android:exported="true" />
+
+
+        <!-- 监听网络状态变化 -->
+        <receiver android:name=".receiver.NetworkStateReceiver">
+
+            <!-- <intent-filter> -->
+            <!-- &lt;!&ndash;<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />&ndash;&gt; -->
+            <!-- <action android:name="android.net.wifi.STATE_CHANGE"/> -->
+            <!-- </intent-filter> -->
+        </receiver>
+
+        <activity android:name=".activity.tab.TabActivity" />
+        <activity android:name=".activity.tab.OnlyTabActivity" />
+        <activity android:name=".activity.WebViewActivity"></activity>
+        <activity
+            android:name=".activity.PermissionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+    </application>
+
+</manifest>

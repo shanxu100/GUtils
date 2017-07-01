@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.luluteam.GUtils.activity.tab.OnlyTabActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/content_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/lineview"
+        android:layout_below="@+id/content_toolbar"
+        android:orientation="vertical"></LinearLayout>
+
+    <View
+        android:id="@+id/lineview"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/buttom_tablayout"
+        android:background="#d3d3d3"></View>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/buttom_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/body_bg"
+        app:tabIndicatorHeight="0dp"></android.support.design.widget.TabLayout>
+
+</RelativeLayout>

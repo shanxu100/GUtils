@@ -1,0 +1,22 @@
+<device-admin>
+    <uses-policies>
+        <force-lock />
+        <!--强制锁屏-->
+        <limit-password />
+        <!--设置密码规则-->
+        <watch-login />
+        <!--监控屏幕解锁尝试次数-->
+        <reset-password />
+        <!--更改屏幕解锁密码-->
+        <force-lock />
+        <!--设备自动解锁-->
+        <wipe-data />
+        <!--清除数据-->
+        <expire-password />
+        <!--激活密码-->
+        <encrypted-storage />
+        <!--数据加密-->
+        <disable-camera />
+        <!--禁用摄像头-->
+    </uses-policies>
+</device-admin>
