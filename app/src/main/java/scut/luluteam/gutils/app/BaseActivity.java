@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -90,32 +91,41 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         if (customBuilder.isSetStatusBar) {
-            steepStatusBar();
+            /**
+             * 开始设置：[沉浸状态栏]
+             */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // 透明状态栏
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                // 透明导航栏
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
         }
         if (!customBuilder.isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            // Translucent status bar
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        /**
+         * 对于Android 4.4以上，状态栏设置为全透明
+         */
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window window = getWindow();
+//            // Translucent status bar
+//            //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
+
+        if (customBuilder.statusBarColor_Id != -1) {
+            //取消状态栏透明
+            //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //添加Flag把状态栏设为可绘制模式
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(mContext, customBuilder.statusBarColor_Id));
+            }
         }
+
+
     }
 
-    /**
-     * 开始设置：[沉浸状态栏]
-     */
-    private void steepStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
 
     //======================================================================
 
@@ -135,6 +145,11 @@ public class BaseActivity extends AppCompatActivity {
          * 是否允许旋转屏幕
          **/
         private boolean isAllowScreenRoate = false;
+
+        /**
+         * 设置状态栏颜色:对于Android 5.0有效
+         */
+        private int statusBarColor_Id = -1;
 
         /**
          * [是否允许全屏]
@@ -163,6 +178,11 @@ public class BaseActivity extends AppCompatActivity {
          */
         public CustomBuilder allowScreenRoate(boolean isAllowScreenRoate) {
             this.isAllowScreenRoate = isAllowScreenRoate;
+            return this;
+        }
+
+        public CustomBuilder setStatusBarColor_Id(int statusBarColor_Id) {
+            this.statusBarColor_Id = statusBarColor_Id;
             return this;
         }
 

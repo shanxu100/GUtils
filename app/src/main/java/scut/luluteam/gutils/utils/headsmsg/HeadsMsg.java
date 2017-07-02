@@ -16,6 +16,9 @@ import java.util.List;
  */
 
 public class HeadsMsg {
+
+    public boolean flag_hasDismissed=false;
+
     private Context context;
     /**
      * 出现时间  单位是 second
@@ -25,7 +28,7 @@ public class HeadsMsg {
      *
      */
     private Notification notification;
-    private HeadMsgBuilder builder;
+    private HeadMsgBuilder headMsgBuilder;
 
 
     private boolean isSticky = false;
@@ -63,7 +66,7 @@ public class HeadsMsg {
         private int smallIcon;
         private boolean isSticky;
 
-        Context mContext;
+        private Context mContext;
 
 
         public HeadMsgBuilder(Context context) {
@@ -135,10 +138,9 @@ public class HeadsMsg {
             notificationBuilder.setSmallIcon(smallIcon);
 
             headsMsg.setSticky(isSticky);
-
             headsMsg.setNotification(notificationBuilder.build());
             headsMsg.setActions(actions);
-            headsMsg.setBuilder(this);
+            headsMsg.setHeadMsgBuilder(this);
             return headsMsg;
         }
 
@@ -155,10 +157,9 @@ public class HeadsMsg {
 //            return this;
 //        }
 
-    }//end builder
+    }//end headMsgBuilder
 
     //getter and setter
-
 
     public long getDuration() {
         return duration;
@@ -176,12 +177,12 @@ public class HeadsMsg {
         this.notification = notification;
     }
 
-    public HeadMsgBuilder getBuilder() {
-        return builder;
+    public HeadMsgBuilder getHeadMsgBuilder() {
+        return headMsgBuilder;
     }
 
-    public void setBuilder(HeadMsgBuilder builder) {
-        this.builder = builder;
+    public void setHeadMsgBuilder(HeadMsgBuilder headMsgBuilder) {
+        this.headMsgBuilder = headMsgBuilder;
     }
 
     public boolean isSticky() {

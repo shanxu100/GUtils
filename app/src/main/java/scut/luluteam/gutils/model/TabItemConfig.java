@@ -19,6 +19,9 @@ import scut.luluteam.gutils.R;
 public class TabItemConfig {
 
 
+    /**
+     * TabItem的实体类
+     */
     public static class TabItemView extends LinearLayout {
 
         /**
@@ -70,13 +73,16 @@ public class TabItemConfig {
     }
 
 
+    /**
+     * 包含了一组Fragment数据：fragmentTag、fragment、tabItemView
+     */
     public static class ItemHolder {
-        public String tag;
+        public String fragmentTag;
         public Fragment fragment;
         public TabItemView tabItemView;
 
-        public ItemHolder(String tag, Fragment fragment, TabItemView tabItemView) {
-            this.tag = tag;
+        public ItemHolder(String fragmentTag, Fragment fragment, TabItemView tabItemView) {
+            this.fragmentTag = fragmentTag;
             this.fragment = fragment;
             this.tabItemView = tabItemView;
         }

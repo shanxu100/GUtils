@@ -34,8 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="这是一个自定义的 HeadUp"
-                android:textColor="@color/gray"
-                />
+                android:textColor="@color/gray" />
 
             <TextView
                 android:layout_width="match_parent"

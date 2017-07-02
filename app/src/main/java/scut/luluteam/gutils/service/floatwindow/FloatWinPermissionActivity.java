@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 
-
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -22,7 +21,7 @@ import scut.luluteam.gutils.R;
 @RuntimePermissions
 public class FloatWinPermissionActivity extends Activity {
 
-    private String TAG="FloatWinPermActivity";
+    private String TAG = "FloatWinPermActivity";
 
 
     @Override

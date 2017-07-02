@@ -20,7 +20,6 @@ import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.fragment.BlankFragment;
 import scut.luluteam.gutils.fragment.TabFragment;
-import scut.luluteam.gutils.model.TabItemConfig;
 import scut.luluteam.gutils.model.TabItemConfig.ItemHolder;
 import scut.luluteam.gutils.model.TabItemConfig.TabItemView;
 
@@ -44,6 +43,7 @@ public class OnlyTabActivity extends BaseActivity {
         getCustomBuilder()
                 .setNoTitle(true)
                 .allowScreenRoate(false)
+                .setStatusBarColor_Id(R.color.blue)
                 .build();
         setContentView(R.layout.activity_only_tab);
 
@@ -116,7 +116,7 @@ public class OnlyTabActivity extends BaseActivity {
 
         //初始化第一个fragment
         this.getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_ll, itemHolderList.get(0).fragment, itemHolderList.get(0).tag)
+                .add(R.id.content_ll, itemHolderList.get(0).fragment, itemHolderList.get(0).fragmentTag)
                 .show(itemHolderList.get(0).fragment)
                 .commit();
 
@@ -138,12 +138,12 @@ public class OnlyTabActivity extends BaseActivity {
      */
     private void changeFragment(int showPosition, int hidePosition) {
         transaction = manager.beginTransaction();
-        Fragment showFragment = manager.findFragmentByTag(itemHolderList.get(showPosition).tag);
+        Fragment showFragment = manager.findFragmentByTag(itemHolderList.get(showPosition).fragmentTag);
         if (showFragment == null) {
             Log.e(TAG, "未找到fragment");
             transaction.add(R.id.content_ll,
                     itemHolderList.get(showPosition).fragment,
-                    itemHolderList.get(showPosition).tag);
+                    itemHolderList.get(showPosition).fragmentTag);
         }
         transaction.hide((itemHolderList.get(hidePosition).fragment))
                 .show((itemHolderList.get(showPosition).fragment))

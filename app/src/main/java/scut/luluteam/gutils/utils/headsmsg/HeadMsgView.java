@@ -41,6 +41,8 @@ class HeadMsgView extends LinearLayout {
     public int viewWidth;
     private float validWidth;
     private int maxVelocity;
+    //因为滑动取消的时候，会触发多次dismiss()函数。但只需要执行一个就可以了
+    //private boolean Flag_isDismissing = false;
 
     private VelocityTracker velocityTracker;
     /**
@@ -98,11 +100,13 @@ class HeadMsgView extends LinearLayout {
         //cutDown = headsMsg.getDuration();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                System.out.println("ACTION_DOWN");
                 touchX = event.getX();
                 startY = event.getRawY();
                 pointerId = event.getPointerId(0);
                 break;
             case MotionEvent.ACTION_MOVE:
+                System.out.println("ACTION_MOVE");
                 switch (scrollOrientationEnum) {
                     case NONE:
                         if (Math.abs((rawX - touchX)) > 20) {
@@ -119,12 +123,14 @@ class HeadMsgView extends LinearLayout {
                         break;
                     case VERTICAL:
                         if (startY - rawY > 20) {
+                            System.out.println("ACTION_MOVE:VERTICAL:dismiss");
                             dismiss(true);
                         }
                         break;
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                System.out.println("ACTION_UP");
                 velocityTracker.computeCurrentVelocity(1000, maxVelocity);
                 int dis = (int) velocityTracker.getYVelocity(pointerId);
                 if (scrollOrientationEnum == ScrollOrientationEnum.NONE) {
@@ -132,6 +138,7 @@ class HeadMsgView extends LinearLayout {
 
                         try {
                             headsMsg.getNotification().contentIntent.send();
+                            System.out.println("ACTION_UP:dismiss");
                             dismiss(true);
                         } catch (PendingIntent.CanceledException e) {
                             e.printStackTrace();
@@ -211,6 +218,7 @@ class HeadMsgView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (toAlpha == 0) {
+                    System.out.println("translationX:dismiss");
                     dismiss(false);
                 }
             }
@@ -246,12 +254,16 @@ class HeadMsgView extends LinearLayout {
      * 取消悬浮窗的：显示相关动画，清理相关资源
      */
     private void dismiss(boolean withAnim) {
+
+        System.out.println("is Dismissing");
         if (withAnim) {
             //HeadMsgManager.getInstant(getContext()).dismissWithAnim();
 
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
+                    System.out.println("is Dismissing:run on UI Thread");
 
                     ObjectAnimator anim = ObjectAnimator.ofFloat(headsMsg.getCustomView(), "translationY", 0, -700);
                     anim.setDuration(700);
@@ -265,6 +277,7 @@ class HeadMsgView extends LinearLayout {
                         @Override
                         public void onAnimationEnd(Animator animator) {
                             HeadMsgManager.getInstant().dismiss();
+                            //headsMsg.flag_hasDismissed = true;
                         }
 
                         @Override
@@ -291,6 +304,7 @@ class HeadMsgView extends LinearLayout {
             try {
                 velocityTracker.clear();
                 velocityTracker.recycle();
+                velocityTracker = null;
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
@@ -320,6 +334,7 @@ class HeadMsgView extends LinearLayout {
                     new CountTime.CountTimeEvent() {
                         @Override
                         public void timeOut() {
+                            System.out.println("timeout dismiss");
                             dismiss(true);
                         }
                     });

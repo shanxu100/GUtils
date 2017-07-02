@@ -50,8 +50,6 @@ public class HeadMsgManager {
 
     /**
      * 显示
-     *
-     * @param headsMsg
      */
     public void show(Context mContext, final HeadsMsg headsMsg) {
 
@@ -96,6 +94,7 @@ public class HeadMsgManager {
         if (msgView.getParent() != null) {
             windowManager.removeView(msgView);
         }
+
     }
 
 

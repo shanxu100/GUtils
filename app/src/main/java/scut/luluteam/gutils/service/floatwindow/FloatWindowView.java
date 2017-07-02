@@ -55,7 +55,7 @@ public class FloatWindowView {
 
             close_btn = (Button) findViewById(R.id.close_btn);
             click_btn = (Button) findViewById(R.id.click_btn);
-            second_btn=(Button)findViewById(R.id.second_btn);
+            second_btn = (Button) findViewById(R.id.second_btn);
 
             close_btn.setOnClickListener(new OnClickListener() {
                 @Override
@@ -75,7 +75,7 @@ public class FloatWindowView {
                 public void onClick(View v) {
                     //ClickUtil.setMouseClick(,750,610);
                     //((App)appContext).startScreenShot();
-                    ScreenShot screenShot=new ScreenShot();
+                    ScreenShot screenShot = new ScreenShot();
                     screenShot.start();
                     FloatWindowManager.removeBigWindow(appContext);
                 }

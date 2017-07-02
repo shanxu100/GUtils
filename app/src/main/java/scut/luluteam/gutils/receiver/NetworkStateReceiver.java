@@ -10,18 +10,17 @@ import scut.luluteam.gutils.utils.NetUtil;
 
 
 public class NetworkStateReceiver extends BroadcastReceiver {
-    private String TAG="NetworkStateReceiver";
+    private String TAG = "NetworkStateReceiver";
     private static NetworkStateListener networkStateListener;
 
-    public static void setNetworkStateListener(NetworkStateListener listener)
-    {
-        networkStateListener=listener;
+    public static void setNetworkStateListener(NetworkStateListener listener) {
+        networkStateListener = listener;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         //根据广播来判断当前网络状态——不准确
-        Log.e(TAG,intent.getAction());
+        Log.e(TAG, intent.getAction());
 //        Parcelable parcelableExtra = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 //        if (null != parcelableExtra) {
 //            NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
@@ -34,8 +33,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             int networkState = NetUtil.getNetworkState(context);
             // 接口回调传过去状态的类型
-            if (networkStateListener!=null)
-            {
+            if (networkStateListener != null) {
                 networkStateListener.onNetStateChange(networkState);
             }
 

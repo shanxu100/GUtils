@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 
-
 import java.util.Timer;
 
 import scut.luluteam.gutils.R;
