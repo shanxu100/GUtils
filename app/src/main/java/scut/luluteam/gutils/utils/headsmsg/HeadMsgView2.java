@@ -3,10 +3,13 @@ package scut.luluteam.gutils.utils.headsmsg;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import com.nineoldandroids.animation.Animator;
@@ -22,7 +25,7 @@ import scut.luluteam.gutils.utils.CountTime;
  * Created by guan on 6/23/17.
  */
 
-class HeadMsgView extends LinearLayout {
+class HeadMsgView2 extends LinearLayout {
 
     private float rawX = 0;
     private float rawY = 0;
@@ -68,13 +71,16 @@ class HeadMsgView extends LinearLayout {
 
     private ScrollOrientationEnum scrollOrientationEnum = ScrollOrientationEnum.NONE;
 
+    private GestureDetector gestureDetector;
+    private GestureDetector.OnGestureListener gestureListener;
+
 
     /**
      * 构造函数
      *
      * @param context
      */
-    public HeadMsgView(Context context) {
+    public HeadMsgView2(Context context) {
         super(context);
         this.mContext = context;
 //        LinearLayout view = (LinearLayout) LayoutInflater.from(getContext()).
@@ -90,89 +96,153 @@ class HeadMsgView extends LinearLayout {
         originalLeft = 0;
 
 
+        gestureListener = new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent motionEvent) {
+                Log.i("MyGesture", "onDown");
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent motionEvent) {
+                Log.i("MyGesture", "onShowPress");
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent motionEvent) {
+                Log.i("MyGesture", "onSingleTapUp");
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                //Log.i("MyGesture", "onScroll");
+                Log.i("MyGesture2", "onScroll:"+(e2.getX()-e1.getX()) +"   "+distanceX);
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent motionEvent) {
+                Log.i("MyGesture", "onLongPress");
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                // 参数解释：
+                // e1：第1个ACTION_DOWN MotionEvent
+                // e2：最后一个ACTION_MOVE MotionEvent
+                // velocityX：X轴上的移动速度，像素/秒
+                // velocityY：Y轴上的移动速度，像素/秒
+
+                final int FLING_MIN_DISTANCE_X = 100;
+                final int FLING_MIN_DISTANCE_Y = 30;
+                final int FLING_MIN_VELOCITY = 200;
+
+                // X轴的坐标位移大于FLING_MIN_DISTANCE，且移动速度大于FLING_MIN_VELOCITY个像素/秒
+                if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE_X && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
+                    // Fling left
+                    Log.i("MyGesture", "Fling left");
+                    //Toast.makeText(this, "Fling Left", Toast.LENGTH_SHORT).show();
+
+                } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE_X && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
+                    // Fling right
+                    Log.i("MyGesture", "Fling right");
+                    //Toast.makeText(this, "Fling Right", Toast.LENGTH_SHORT).show();
+                } else if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE_Y && Math.abs(velocityY) > FLING_MIN_VELOCITY)
+                {
+                    Log.i("MyGesture", "Fling up");
+                }
+                    return false;
+            }
+        };
+        gestureDetector=new GestureDetector(mContext,gestureListener);
+
+
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        rawX = event.getRawX();
-        rawY = event.getRawY();
-        acquireVelocityTracker(event);
+//        rawX = event.getRawX();
+//        rawY = event.getRawY();
+//        acquireVelocityTracker(event);
+        return  gestureDetector.onTouchEvent(event);
         //cutDown = headsMsg.getDuration();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                System.out.println("ACTION_DOWN");
-                touchX = event.getX();
-                startY = event.getRawY();
-                pointerId = event.getPointerId(0);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                System.out.println("ACTION_MOVE");
-                switch (scrollOrientationEnum) {
-                    case NONE:
-                        if (Math.abs((rawX - touchX)) > 20) {
-                            scrollOrientationEnum = ScrollOrientationEnum.HORIZONTAL;
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                System.out.println("ACTION_DOWN");
+//                touchX = event.getX();
+//                startY = event.getRawY();
+//                pointerId = event.getPointerId(0);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                System.out.println("ACTION_MOVE");
+//                switch (scrollOrientationEnum) {
+//                    case NONE:
+//                        if (Math.abs((rawX - touchX)) > 20) {
+//                            scrollOrientationEnum = ScrollOrientationEnum.HORIZONTAL;
+//
+//                        } else if (startY - rawY > 20) {
+//                            scrollOrientationEnum = ScrollOrientationEnum.VERTICAL;
+//
+//                        }
+//
+//                        break;
+//                    case HORIZONTAL:
+//                        updatePosition((int) (rawX - touchX));
+//                        break;
+//                    case VERTICAL:
+//                        if (startY - rawY > 20) {
+//                            System.out.println("ACTION_MOVE:VERTICAL:dismiss");
+//                            dismiss(true);
+//                        }
+//                        break;
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                System.out.println("ACTION_UP");
+//                velocityTracker.computeCurrentVelocity(1000, maxVelocity);
+//                int dis = (int) velocityTracker.getYVelocity(pointerId);
+//                if (scrollOrientationEnum == ScrollOrientationEnum.NONE) {
+//                    if (headsMsg.getNotification().contentIntent != null) {
+//
+//                        try {
+//                            headsMsg.getNotification().contentIntent.send();
+//                            System.out.println("ACTION_UP:dismiss");
+//                            dismiss(true);
+//                        } catch (PendingIntent.CanceledException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    break;
+//                }
+//
+//                int toX;
+//                if (preLeft > 0) {
+//                    toX = (int) (preLeft + Math.abs(dis));
+//                } else {
+//                    toX = (int) (preLeft - Math.abs(dis));
+//                }
+//                if (toX <= -validWidth) {
+//                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
+//                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
+//                    translationX(preLeft, -(validWidth + 10), preAlpha, 0);
+//                } else if (toX <= validWidth) {
+//                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
+//                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
+//                    translationX(preLeft, 0, preAlpha, 1);
+//                } else {
+//                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
+//                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
+//                    translationX(preLeft, validWidth + 10, preAlpha, 0);
+//                }
+//                preLeft = 0;
+//                scrollOrientationEnum = ScrollOrientationEnum.NONE;
+//                break;
+//        }
 
-                        } else if (startY - rawY > 20) {
-                            scrollOrientationEnum = ScrollOrientationEnum.VERTICAL;
-
-                        }
-
-                        break;
-                    case HORIZONTAL:
-                        updatePosition((int) (rawX - touchX));
-                        break;
-                    case VERTICAL:
-                        if (startY - rawY > 20) {
-                            System.out.println("ACTION_MOVE:VERTICAL:dismiss");
-                            dismiss(true);
-                        }
-                        break;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                System.out.println("ACTION_UP");
-                velocityTracker.computeCurrentVelocity(1000, maxVelocity);
-                int dis = (int) velocityTracker.getYVelocity(pointerId);
-                if (scrollOrientationEnum == ScrollOrientationEnum.NONE) {
-                    if (headsMsg.getNotification().contentIntent != null) {
-
-                        try {
-                            headsMsg.getNotification().contentIntent.send();
-                            System.out.println("ACTION_UP:dismiss");
-                            dismiss(true);
-                        } catch (PendingIntent.CanceledException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    break;
-                }
-
-                int toX;
-                if (preLeft > 0) {
-                    toX = (int) (preLeft + Math.abs(dis));
-                } else {
-                    toX = (int) (preLeft - Math.abs(dis));
-                }
-                if (toX <= -validWidth) {
-                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
-                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
-                    translationX(preLeft, -(validWidth + 10), preAlpha, 0);
-                } else if (toX <= validWidth) {
-                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
-                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
-                    translationX(preLeft, 0, preAlpha, 1);
-                } else {
-                    float preAlpha = 1 - Math.abs(preLeft) / validWidth;
-                    preAlpha = preAlpha >= 0 ? preAlpha : 0;
-                    translationX(preLeft, validWidth + 10, preAlpha, 0);
-                }
-                preLeft = 0;
-                scrollOrientationEnum = ScrollOrientationEnum.NONE;
-                break;
-        }
-
-        return super.onTouchEvent(event);
+        //return super.onTouchEvent(event);
     }
 
     /**

@@ -89,9 +89,4 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-  <component name="SvnConfiguration">
-    <configuration>C:\Users\Guan\AppData\Roaming\Subversion</configuration>
-    <option name="sshConnectionType" value="PASSWORD" />
-    <option name="sshUserName" value="guashanxu" />
-  </component>
 </project>

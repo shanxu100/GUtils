@@ -247,7 +247,7 @@ public class MainActivity extends BaseActivity {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("HeadMsg Title")
                 .setContentText("这个是自定义通知")
-                //.setSticky(true)
+                .setSticky(true)
                 .buildHeadMsg();
         View view = getLayoutInflater().inflate(R.layout.view_headmsg_custome, null);
         headsMsg.setCustomView(view);

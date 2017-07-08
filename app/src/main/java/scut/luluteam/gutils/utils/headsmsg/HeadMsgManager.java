@@ -19,7 +19,7 @@ public class HeadMsgManager {
 
     private WindowManager windowManager;
     private NotificationManager notificationManager = null;
-    private HeadMsgView msgView;
+    private HeadMsgView2 msgView;
     public static WindowManager.LayoutParams winParams;
 
     /**
@@ -54,7 +54,7 @@ public class HeadMsgManager {
     public void show(Context mContext, final HeadsMsg headsMsg) {
 
         this.mContext = mContext;
-        msgView = new HeadMsgView(mContext);
+        msgView = new HeadMsgView2(mContext);
         msgView.setUpWithHeadMsg(headsMsg);
 
         /**
