@@ -1,4 +1,4 @@
-package scut.luluteam.gutils.utils.headsmsg;
+package scut.luluteam.gutils.utils.headmsg;
 
 import android.app.Activity;
 import android.app.PendingIntent;

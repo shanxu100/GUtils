@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  *
  * @author zuolongsnail
  */
-public class SharedPreferencesUtils {
+public class SharedPreferencesUtil {
     public final static String SETTING = "Setting";
 
     public static void putValue(Context context, String key, int value) {
