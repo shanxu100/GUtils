@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.annotation.IntDef;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,11 +15,8 @@ import java.net.URISyntaxException;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.App;
 import scut.luluteam.gutils.utils.ShowUtil;
-
-import static android.R.id.message;
 
 public class SocketService extends Service {
     public SocketService() {
@@ -48,7 +41,7 @@ public class SocketService extends Service {
     }
 
     //静态内部类
-    private static class SocketManager {
+    public static class SocketManager {
         //单例模式
         private static SocketManager manager = new SocketManager();
         private Socket mSocket;
@@ -94,6 +87,10 @@ public class SocketService extends Service {
 
         public static void stopSocket() {
             manager.stop();
+        }
+
+        public static void send(String msg) {
+            manager.attemptSend(msg);
         }
 
         //=============================定义监听器====================================
@@ -145,6 +142,7 @@ public class SocketService extends Service {
         private Emitter.Listener onNewMessage = new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
+                System.out.println(args[0]);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -167,6 +165,31 @@ public class SocketService extends Service {
             }
         };
 
+        private Emitter.Listener onUserJoined = new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject) args[0];
+                        String username;
+                        int numUsers;
+                        try {
+                            username = data.getString("username");
+                            numUsers = data.getInt("numUsers");
+                            ShowUtil.LogAndToast("receive new message:" + data.toString());
+                        } catch (JSONException e) {
+                            Log.e(TAG, e.getMessage());
+                            return;
+                        }
+
+                        //addLog(getResources().getString(R.string.message_user_joined, username));
+                        //addParticipantsLog(numUsers);
+                    }
+                });
+            }
+        };
+
         //==============================监听器定义完毕============================================
 
         /**
@@ -184,7 +207,7 @@ public class SocketService extends Service {
             mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
             mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
             mSocket.on("new message", onNewMessage);
-//            mSocket.on("user joined", onUserJoined);
+            mSocket.on("user joined", onUserJoined);
 //            mSocket.on("user left", onUserLeft);
 //            mSocket.on("typing", onTyping);
 //            mSocket.on("stop typing", onStopTyping);
@@ -202,7 +225,7 @@ public class SocketService extends Service {
             mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
             mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
             mSocket.off("new message", onNewMessage);
-//            mSocket.off("user joined", onUserJoined);
+            mSocket.off("user joined", onUserJoined);
 //            mSocket.off("user left", onUserLeft);
 //            mSocket.off("typing", onTyping);
 //            mSocket.off("stop typing", onStopTyping);

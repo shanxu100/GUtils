@@ -25,6 +25,8 @@ import scut.luluteam.gutils.service.Down_UploadService;
 import scut.luluteam.gutils.service.floatwindow.FloatWinService;
 import scut.luluteam.gutils.service.mqtt.MQTTService;
 import scut.luluteam.gutils.service.mqtt.MessageSender;
+import scut.luluteam.gutils.service.socket.SocketService;
+import scut.luluteam.gutils.service.websocket.WebSocketService;
 import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.UriUtil;
 import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
@@ -42,6 +44,7 @@ import scut.luluteam.gutils.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.java_websocket.client.WebSocketClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,14 +94,14 @@ public class MainActivity extends BaseActivity {
         test2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testStopFloatWindow();
+                testWebSocket();
             }
         });
 
         test3_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testheadMsg();
+                testSendWSMsg();
             }
         });
 
@@ -112,14 +115,14 @@ public class MainActivity extends BaseActivity {
         test5_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testHttp();
+                testSendSocketMsg();
             }
         });
 
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testActivity();
+                testIOSocket();
             }
         });
 
@@ -355,6 +358,27 @@ public class MainActivity extends BaseActivity {
         //GLSurfaceView.EGLWindowSurfaceFactory factory=new fa
         Intent intent = new Intent(this, SocketDemoActivity.class);
         startActivity(intent);
+    }
+
+    private void testIOSocket()
+    {
+        Intent intent=new Intent(this, SocketService.class);
+        startService(intent);
+    }
+    private void testSendSocketMsg()
+    {
+        SocketService.SocketManager.send("testSend");
+    }
+
+    private void testWebSocket()
+    {
+        Intent intent=new Intent(this, WebSocketService.class);
+        startService(intent);
+    }
+
+    private void testSendWSMsg()
+    {
+        WebSocketService.sendMsg("test WS Msg");
     }
 
     private void testHttp() {
