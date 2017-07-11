@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="scut.luluteam.gutils">
 
-
     <uses-sdk
         android:minSdkVersion="19"
         android:targetSdkVersion="21" />
@@ -30,10 +29,9 @@
     <!-- 点亮屏幕 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
     <application
-        android:allowBackup="true"
         android:name=".app.App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -46,7 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service
             android:name=".service.Down_UploadService"
@@ -80,7 +77,6 @@
             </intent-filter>
         </receiver>
 
-
         <activity
             android:name=".service.floatwindow.FloatWinPermissionActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
@@ -101,7 +97,6 @@
             android:enabled="true"
             android:exported="true" />
 
-
         <!-- 监听网络状态变化 -->
         <receiver android:name=".receiver.NetworkStateReceiver">
 
@@ -113,11 +108,11 @@
 
         <activity android:name=".activity.tab.TabActivity" />
         <activity android:name=".activity.tab.OnlyTabActivity" />
-        <activity android:name=".activity.WebViewActivity"></activity>
+        <activity android:name=".activity.WebViewActivity" />
         <activity
             android:name=".activity.PermissionActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <activity android:name=".activity.SocketDemoActivity"></activity>
     </application>
 
 </manifest>

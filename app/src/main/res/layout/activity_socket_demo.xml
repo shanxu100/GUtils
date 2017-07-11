@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/ReceivedMsg_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:hint="textview"/>
+
+    <EditText
+        android:id="@+id/Msg_et"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="content"></EditText>
+
+    <Button
+        android:id="@+id/SendMsg_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="send"></Button>
+</LinearLayout>

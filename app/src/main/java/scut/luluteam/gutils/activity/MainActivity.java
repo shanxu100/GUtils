@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
         test1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testFloatWindow();
+                testActivity();
             }
         });
 
@@ -355,7 +355,7 @@ public class MainActivity extends BaseActivity {
 
     private void testActivity() {
         //GLSurfaceView.EGLWindowSurfaceFactory factory=new fa
-        Intent intent = new Intent(this, OnlyTabActivity.class);
+        Intent intent = new Intent(this, SocketDemoActivity.class);
         startActivity(intent);
     }
 
