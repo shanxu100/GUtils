@@ -17,9 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import scut.luluteam.gutils.activity.WebViewActivity;
 import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
-import scut.luluteam.gutils.app.App;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
 
@@ -29,8 +27,8 @@ import scut.luluteam.gutils.service.mqtt.MQTTService;
 import scut.luluteam.gutils.service.mqtt.MessageSender;
 import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.UriUtil;
-import scut.luluteam.gutils.utils.headsmsg.HeadMsgManager;
-import scut.luluteam.gutils.utils.headsmsg.HeadsMsg;
+import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
+import scut.luluteam.gutils.utils.headmsg.HeadsMsg;
 import scut.luluteam.gutils.utils.http.AsyncHttpURLConnection;
 import scut.luluteam.gutils.utils.lock_screen.DeviceManager;
 import scut.luluteam.gutils.utils.screen_shot.ScreenShotActivity;

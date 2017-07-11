@@ -1,7 +1,6 @@
-package scut.luluteam.gutils.utils.headsmsg;
+package scut.luluteam.gutils.utils.headmsg;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -9,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
 import com.nineoldandroids.animation.Animator;
