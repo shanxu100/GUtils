@@ -112,7 +112,12 @@
         <activity
             android:name=".activity.PermissionActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.SocketDemoActivity"></activity>
+        <activity android:name=".activity.SocketDemoActivity" />
+
+        <service
+            android:name=".service.socket.SocketService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
