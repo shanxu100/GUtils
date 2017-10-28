@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "scut.luluteam.gutils"
         minSdkVersion 19
@@ -58,6 +58,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:design:25.3.1'
+    compile 'io.netty:netty-all:4.1.16.Final'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }

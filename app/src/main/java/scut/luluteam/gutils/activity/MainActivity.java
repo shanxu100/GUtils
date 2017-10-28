@@ -27,6 +27,7 @@ import scut.luluteam.gutils.service.mqtt.MQTTService;
 import scut.luluteam.gutils.service.mqtt.MessageSender;
 import scut.luluteam.gutils.service.socket.SocketService;
 import scut.luluteam.gutils.service.websocket.WebSocketService;
+import scut.luluteam.gutils.service.websocket.WsService;
 import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.UriUtil;
 import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity {
 
     private void testWebSocket()
     {
-        Intent intent=new Intent(this, WebSocketService.class);
+        Intent intent=new Intent(this, WsService.class);
         startService(intent);
     }
 

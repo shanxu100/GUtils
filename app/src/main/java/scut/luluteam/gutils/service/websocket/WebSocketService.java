@@ -10,6 +10,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URISyntaxException;
 
+@Deprecated
 public class WebSocketService extends Service {
     public WebSocketService() {
     }

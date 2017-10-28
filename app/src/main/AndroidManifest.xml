@@ -121,6 +121,10 @@
         <service
             android:name=".service.websocket.WebSocketService"
             android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.websocket.WsService"
+            android:enabled="true"
             android:exported="true"></service>
     </application>
 
