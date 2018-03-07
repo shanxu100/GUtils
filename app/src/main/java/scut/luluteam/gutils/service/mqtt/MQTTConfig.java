@@ -10,10 +10,10 @@ public class MQTTConfig {
     /**
      * MQTT 配置信息
      */
-    //public static String MQTTHOST = "tcp://125.216.242.147:1883";
-    public static String MQTTHOST = "tcp://222.201.145.167:61613";
-    public static String MQTTUSERNAME = "admin";
-    public static String MQTTPASSWORD = "password";
+    public static String MQTTHOST = "tcp://222.201.145.132:1833";
+//    public static String MQTTHOST = "tcp://222.201.145.167:61613";
+    public static String MQTTUSERNAME = "testuser";
+    public static String MQTTPASSWORD = "passwd";
 
     /**
      * 订阅的话题列表，新的topic直接在这里添加即可,不可为空

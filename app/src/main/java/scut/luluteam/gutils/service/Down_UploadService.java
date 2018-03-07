@@ -9,7 +9,7 @@ import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import scut.luluteam.gutils.utils.http.OkHttpManager;
+import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 import scut.luluteam.gutils.R;
 
 import java.io.File;

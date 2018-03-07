@@ -16,8 +16,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+
+import com.kyleduo.switchbutton.SwitchButton;
 
 import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
+import scut.luluteam.gutils.activity.tab.TabActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
 
@@ -28,6 +32,7 @@ import scut.luluteam.gutils.service.mqtt.MessageSender;
 import scut.luluteam.gutils.service.socket.SocketService;
 import scut.luluteam.gutils.service.websocket.WebSocketService;
 import scut.luluteam.gutils.service.websocket.WsService;
+import scut.luluteam.gutils.utils.MqttClientManager;
 import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.UriUtil;
 import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
@@ -45,10 +50,12 @@ import scut.luluteam.gutils.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.java_websocket.client.WebSocketClient;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainActivity extends BaseActivity {
 
@@ -81,6 +88,8 @@ public class MainActivity extends BaseActivity {
         Button test5_btn = (Button) this.findViewById(R.id.test5_btn);
         final Button show_btn = (Button) this.findViewById(R.id.show_btn);
 
+        final SwitchButton switchButton = (SwitchButton) this.findViewById(R.id.switchButton);
+
         results.add(false);
         results.add(true);
 
@@ -95,7 +104,7 @@ public class MainActivity extends BaseActivity {
         test2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testWebSocket();
+                testMqttPublish_true();
             }
         });
 
@@ -123,7 +132,28 @@ public class MainActivity extends BaseActivity {
         show_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testIOSocket();
+                switchButton.setChecked(true);
+            }
+        });
+
+//        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+////                switchButton.setChecked(!isChecked);
+//                System.out.println("balabal");
+//            }
+//        });
+
+        switchButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+//                System.out.println(event.getAction());
+                if (event.getAction()==MotionEvent.ACTION_UP)
+                {
+                    System.out.println("onTouch");
+                }
+                //一定要true
+                return true;
             }
         });
 
@@ -150,8 +180,12 @@ public class MainActivity extends BaseActivity {
         //unregisterReceiver(networkStateReceiver);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
 
-    //===========================================================================================
+//===========================================================================================
 
     private void testSwitchDialog() {
         final G_SwitchDialog switchDialog = new G_SwitchDialog(mContext,
@@ -264,8 +298,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void testStartMqttService() {
-        Intent intent = new Intent(mContext, MQTTService.class);
-        startService(intent);
+//        Intent intent = new Intent(mContext, MQTTService.class);
+//        startService(intent);
+        MqttClientManager.getInstance().start(getApplicationContext());
     }
 
     private void testMqttPublish_true() {
@@ -357,28 +392,25 @@ public class MainActivity extends BaseActivity {
 
     private void testActivity() {
         //GLSurfaceView.EGLWindowSurfaceFactory factory=new fa
-        Intent intent = new Intent(this, SocketDemoActivity.class);
+        Intent intent = new Intent(this, OnlyTabActivity.class);
         startActivity(intent);
     }
 
-    private void testIOSocket()
-    {
-        Intent intent=new Intent(this, SocketService.class);
+    private void testIOSocket() {
+        Intent intent = new Intent(this, SocketService.class);
         startService(intent);
     }
-    private void testSendSocketMsg()
-    {
+
+    private void testSendSocketMsg() {
         SocketService.SocketManager.send("testSend");
     }
 
-    private void testWebSocket()
-    {
-        Intent intent=new Intent(this, WsService.class);
+    private void testWebSocket() {
+        Intent intent = new Intent(this, WsService.class);
         startService(intent);
     }
 
-    private void testSendWSMsg()
-    {
+    private void testSendWSMsg() {
         WebSocketService.sendMsg("test WS Msg");
     }
 

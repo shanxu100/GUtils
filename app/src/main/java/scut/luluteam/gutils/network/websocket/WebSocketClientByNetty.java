@@ -24,25 +24,26 @@ import io.netty.util.CharsetUtil;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * 基于Netty的websocket协议的 Client 实现。。。
+ * 用于Android还有问题，目前无法使用
+ *
  * @author Guan
  */
-public class WebSocketClient {
+public class WebSocketClientByNetty {
 
     static final String URL = "ws://125.216.242.147:8080/bathProject/websocket";
     private EventLoopGroup group = new NioEventLoopGroup();
     private URI uri;
     private final int port;
-    private WebSocketClientHandshaker handshaker;
     private Timer timer = new Timer();
     private static volatile boolean isConnected = false;
 
 
-    private WebSocketClient() {
+    private WebSocketClientByNetty() {
         try {
             uri = new URI(URL);
             String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
@@ -58,10 +59,10 @@ public class WebSocketClient {
     }
 
     private static class WSClientBuilder {
-        public static WebSocketClient client = new WebSocketClient();
+        public static WebSocketClientByNetty client = new WebSocketClientByNetty();
     }
 
-    public static WebSocketClient getInstance() {
+    public static WebSocketClientByNetty getInstance() {
         return WSClientBuilder.client;
     }
 
@@ -88,10 +89,10 @@ public class WebSocketClient {
         }
         try {
             Bootstrap b = new Bootstrap();
-            final WebSocketClientHandler handler = new WebSocketClientHandler(handshaker);
-            handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri,
+            WebSocketClientHandshaker handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri,
                     WebSocketVersion.V13, null, true,
                     new DefaultHttpHeaders());
+            final WebSocketClientHandler handler = new WebSocketClientHandler(handshaker);
             b.group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
@@ -172,14 +173,15 @@ public class WebSocketClient {
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
-            System.out.println("连接已经建立......");
+            System.out.println("连接已经建立......" + Thread.currentThread().getName());
             handshaker.handshake(ctx.channel());
             isConnected = true;
         }
 
         @Override
         public void channelInactive(ChannelHandlerContext ctx) {
-            System.out.println("WebSocket Client disconnected......reconnecting......");
+            System.out.println("WebSocket Client disconnected......reconnecting......"
+                    + Thread.currentThread().getName());
             isConnected = false;
             reconnect();
         }
@@ -229,7 +231,7 @@ public class WebSocketClient {
     }
 
     public static void main(String[] args) throws Exception {
-        WebSocketClient.getInstance().start();
+        WebSocketClientByNetty.getInstance().start();
     }
 
 

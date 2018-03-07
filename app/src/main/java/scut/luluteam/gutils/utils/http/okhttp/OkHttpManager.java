@@ -1,5 +1,7 @@
-package scut.luluteam.gutils.utils.http;
+package scut.luluteam.gutils.utils.http.okhttp;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.File;
@@ -9,6 +11,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.xml.transform.OutputKeys;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,16 +41,22 @@ import okio.Source;
  */
 public class OkHttpManager {
 
-    private static String TAG = "OkHttpManager";
+    private static final String TAG = "OkHttpManager";
+    private static final String Network_Failure_Message = "Timeout：请检查网络连接。";
 
-    private OkHttpClient mOkHttpClient;
+    private static HttpsUtils.SSLParams sslParams;
 
 
-    //public static String FAILURE = "failure";
+    /**
+     * SUCCESS: 网络访问成功
+     * FAILURE：网络畅通，但接口404、500等错误
+     * NETWORK_FAILURE：由于网络原因引起的“无法访问”的错误
+     */
+    public enum State {
+        SUCCESS, FAILURE, NETWORK_FAILURE
+    }
 
-    public enum State {SUCCESS, FAILURE, NETWORK_FAILURE}
-
-    private static ResultCallback defaultResultCallback = new ResultCallback() {
+    private static final ResultCallback defaultResultCallback = new ResultCallback() {
         @Override
         public void onCallBack(State state, String result) {
             Log.e(TAG, "由于未定义ResultCallback参数,以下信息未被处理" +
@@ -55,8 +65,7 @@ public class OkHttpManager {
         }
     };
 
-    private String Network_Failure_Message = "Timeout：请检查网络连接。";
-
+    private OkHttpClient mOkHttpClient;
 
     /**
      * 单例模式：
@@ -66,22 +75,55 @@ public class OkHttpManager {
      * http://www.cnblogs.com/lwbqqyumidi/p/3738059.html
      */
     private static class OkHttpManagerBuilder {
-        private static OkHttpManager okHttpManager = new OkHttpManager();
+        private static OkHttpManager okHttpManager = new OkHttpManager(false);
+        private static OkHttpManager okHttpsManager = new OkHttpManager(true);
     }
 
-    private OkHttpManager() {
+    private OkHttpManager(boolean isHttps) {
         //mOkHttpClient=new OkHttpClient();//使用默认配置
-        mOkHttpClient = new OkHttpClient().newBuilder()
+        OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)//10000毫秒
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                .writeTimeout(30L, TimeUnit.SECONDS)//30秒
-                .build();
+                .writeTimeout(30L, TimeUnit.SECONDS);//30秒
+        if (isHttps) {
+            if (null == sslParams) {
+                builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
+            } else {
+                Log.e(TAG, "https未初始化：sslParams==null");
+            }
+        }
+        mOkHttpClient = builder.build();
         Log.e(TAG, "调用了OkHttpManager一次");
 
     }
 
     private static OkHttpManager getInstance() {
         return OkHttpManagerBuilder.okHttpManager;
+    }
+
+    /**
+     * 未测试
+     *
+     * @return
+     */
+    private static OkHttpManager getHttpsInstance() {
+        return OkHttpManagerBuilder.okHttpsManager;
+    }
+
+    /**
+     * 初始化Https的证书
+     *
+     * @param context
+     */
+    public static void initHttps(Context context) {
+        try {
+            //assets文件夹中的 cer 证书文件
+            InputStream[] certificates = new InputStream[]{context.getAssets().open("srca.cer")};
+            sslParams = HttpsUtils.getSslSocketFactory(certificates, null, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "https初始化失败");
+        }
     }
     //==========================以上是单例模式,以下是对外暴露的API=========================
 

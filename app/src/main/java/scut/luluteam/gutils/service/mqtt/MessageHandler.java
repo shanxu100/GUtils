@@ -47,31 +47,32 @@ public class MessageHandler {
     public void onMessage(String topic, MqttMessage mqttMessage) {
 
         if (topic.equals("TOPIC_TEST")) {
+            System.out.println(topic+"\t"+mqttMessage.toString());
 
-            //首先解析成父类，获取Type字段
-            MQTTConfig.MQTTMessage tmpMessage = GsonUtil.fromJson(mqttMessage.toString(),
-                    MQTTConfig.MQTTMessage.class);
-            //再根据type字段，分类讨论
-            if (MQTTConfig.MessageType.STRING == tmpMessage.type) {
-
-                MQTTConfig.StringMessage message = GsonUtil.fromJson(mqttMessage.toString(),
-                        MQTTConfig.StringMessage.class);
-                ShowUtil.LogAndToast("String");
-
-            } else if (MQTTConfig.MessageType.ACTION_LOCK_SCREEN == tmpMessage.type) {
-
-                MQTTConfig.LockScreenMessage message = GsonUtil.fromJson(mqttMessage.toString(),
-                        MQTTConfig.LockScreenMessage.class);
-                DeviceManager.getInstance().keepScreenLocked(message.keepLocked);
-
-            } else if (MQTTConfig.MessageType.ACTION_CLICK_SCREEN == tmpMessage.type) {
-
-                MQTTConfig.ClickScreenMessage message = GsonUtil.fromJson(mqttMessage.toString(),
-                        MQTTConfig.ClickScreenMessage.class);
-                int x = message.xInScreen;
-                int y = message.yInScreen;
-
-            }
+//            //首先解析成父类，获取Type字段
+//            MQTTConfig.MQTTMessage tmpMessage = GsonUtil.fromJson(mqttMessage.toString(),
+//                    MQTTConfig.MQTTMessage.class);
+//            //再根据type字段，分类讨论
+//            if (MQTTConfig.MessageType.STRING == tmpMessage.type) {
+//
+//                MQTTConfig.StringMessage message = GsonUtil.fromJson(mqttMessage.toString(),
+//                        MQTTConfig.StringMessage.class);
+//                ShowUtil.LogAndToast("String");
+//
+//            } else if (MQTTConfig.MessageType.ACTION_LOCK_SCREEN == tmpMessage.type) {
+//
+//                MQTTConfig.LockScreenMessage message = GsonUtil.fromJson(mqttMessage.toString(),
+//                        MQTTConfig.LockScreenMessage.class);
+//                DeviceManager.getInstance().keepScreenLocked(message.keepLocked);
+//
+//            } else if (MQTTConfig.MessageType.ACTION_CLICK_SCREEN == tmpMessage.type) {
+//
+//                MQTTConfig.ClickScreenMessage message = GsonUtil.fromJson(mqttMessage.toString(),
+//                        MQTTConfig.ClickScreenMessage.class);
+//                int x = message.xInScreen;
+//                int y = message.yInScreen;
+//
+//            }
 
         } else if (false) {
 

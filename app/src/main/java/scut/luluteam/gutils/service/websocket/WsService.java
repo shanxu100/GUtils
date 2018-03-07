@@ -4,19 +4,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import scut.luluteam.gutils.network.websocket.WebSocketClient;
+//import scut.luluteam.gutils.network.websocket.WebSocketClient;
+
 
 public class WsService extends Service {
-    private Thread websocketThread;
+    static final String URL = "ws://125.216.242.147:8080/bathProject/websocket";
+    static final String port = "80";
+
 
     public WsService() {
-        websocketThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(" start websocket thread ");
-                WebSocketClient.getInstance().start();
-            }
-        }, "WebSocketThread in service");
+
     }
 
     @Override
@@ -27,14 +24,13 @@ public class WsService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        websocketThread.start();
-        //WebSocketClient.getInstance().start();
+//        WebSocketClient.getInstance().start();
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        WebSocketClient.getInstance().stop();
+//        WebSocketClient.getInstance().stop();
         super.onDestroy();
     }
 }

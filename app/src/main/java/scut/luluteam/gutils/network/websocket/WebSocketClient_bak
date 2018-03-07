@@ -1,0 +1,180 @@
+package scut.luluteam.gutils.network.websocket;
+
+
+import android.os.Handler;
+import android.os.HandlerThread;
+
+import java.net.URI;
+
+import io.crossbar.autobahn.websocket.WebSocketConnection;
+import io.crossbar.autobahn.websocket.WebSocketConnectionHandler;
+import io.crossbar.autobahn.websocket.exceptions.WebSocketException;
+import io.crossbar.autobahn.websocket.types.ConnectionResponse;
+
+
+/**
+ * 在Manifest文件中的Application标签中，加入如下代码。否则无法正常使用
+ * tools:replace="android:label"
+ * <p>
+ * <p>
+ * compileOptions {
+ * sourceCompatibility JavaVersion.VERSION_1_8
+ * targetCompatibility JavaVersion.VERSION_1_8
+ * }
+ * Created by Guan on 2017/10/29.
+ */
+public class WebSocketClient {
+
+    private static final String URL = "ws://125.216.242.147:8080/bathProject/websocket";
+    private URI uri;
+    private int port;
+
+    /**
+     * 用于处理发送和接收消息的线程
+     */
+    private HandlerThread handlerThread;
+    private Handler wsHandler;
+
+    private WebSocketConnection wsConnect;
+
+    private WebSocketClient() {
+        try {
+            uri = new URI(URL);
+            String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
+            if (!"ws".equalsIgnoreCase(scheme) && !"wss".equalsIgnoreCase(scheme)) {
+                System.err.println("Only WS(S) is supported.");
+                throw new Exception();
+            }
+            port = uri.getPort() == -1 ? 80 : uri.getPort();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class WSClientBuilder {
+        public static WebSocketClient client = new WebSocketClient();
+    }
+
+    public static WebSocketClient getInstance() {
+        return WSClientBuilder.client;
+    }
+
+    /**
+     * 开启WebSocket
+     */
+    public void start() {
+        handlerThread = new HandlerThread("WebSocket Handler Thread");
+        handlerThread.start();
+        wsHandler = new Handler(handlerThread.getLooper());
+
+        wsConnect = new WebSocketConnection();
+        wsHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                connect();
+            }
+        });
+    }
+
+    /**
+     * 关闭WebSocket
+     */
+    public void stop() {
+        if (wsConnect != null) {
+            wsConnect.sendClose();
+            wsConnect = null;
+        }
+        if (handlerThread != null) {
+            handlerThread.quitSafely();
+            handlerThread = null;
+        }
+        wsHandler = null;
+    }
+
+    /**
+     * 用于发送消息
+     *
+     * @param msg
+     */
+    public void sendMsg(final String msg) {
+        if (!isConnected()) {
+            return;
+        }
+        wsHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                wsConnect.sendMessage(msg);
+            }
+        });
+    }
+
+    /**
+     * 发起连接的主体
+     */
+    private void connect() {
+        if (wsConnect == null) {
+            System.out.println("WebSocket Client has been stopped. Please invoke start() method to run WebSocket Client.");
+            return;
+        }
+        try {
+            wsConnect.connect(URL, new WebSocketConnectionHandler() {
+                @Override
+                public void onConnect(ConnectionResponse response) {
+                    super.onConnect(response);
+                    System.out.println("WebSocket on connect");
+                }
+
+                @Override
+                public void onOpen() {
+                    super.onOpen();
+                    System.out.println("WebSocket on open");
+                    wsConnect.sendMessage("Hello, I am an Android Client");
+                }
+
+                @Override
+                public void onClose(int code, String reason) {
+                    super.onClose(code, reason);
+                    System.out.println("WebSocket on close");
+                    reconnect();
+                }
+
+                @Override
+                public void onMessage(String payload) {
+                    super.onMessage(payload);
+                }
+            });
+        } catch (WebSocketException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 断线重连:
+     * 如果连接突然中止，会调用onClose()方法。其中会触发reconnect。
+     * 如果连接不成功，还会调用onClose()方法。然后继续触发reconnect
+     */
+    private void reconnect() {
+        if (wsHandler != null && !isConnected()) {
+            wsHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    connect();
+                }
+            }, 2000);
+        }
+
+    }
+
+    /**
+     * 判断是否处于连接状态
+     *
+     * @return
+     */
+    private boolean isConnected() {
+        if (wsConnect != null) {
+            return wsConnect.isConnected();
+        }
+        return false;
+    }
+}

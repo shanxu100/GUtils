@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="scut.luluteam.gutils">
 
     <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="21" />
+        android:minSdkVersion="21"
+        android:targetSdkVersion="23"
+        tools:overrideLibrary="io.crossbar.autobahn" />
 
     <!-- 有Camera，并且可以自动聚焦的设备 -->
     <uses-feature android:name="android.hardware.camera" />
@@ -36,7 +38,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -125,7 +128,28 @@
         <service
             android:name=".service.websocket.WsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service
+            android:name=".service.mqtt.MqttTestService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.test.FirstActivity"
+            android:launchMode="standard" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activity.test.SecondActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activity.test.ThirdActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>
