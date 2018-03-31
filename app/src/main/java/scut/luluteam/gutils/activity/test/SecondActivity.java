@@ -9,8 +9,9 @@ import android.widget.TextView;
 
 import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.App;
+import scut.luluteam.gutils.app.BaseActivity;
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends BaseActivity {
     Button second1_btn;
     Button second3_btn;
 
@@ -46,6 +47,7 @@ public class SecondActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 }

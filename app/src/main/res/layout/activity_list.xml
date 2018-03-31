@@ -4,22 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="scut.luluteam.gutils.activity.test.FirstActivity"
-    android:orientation="vertical">
-    <TextView
-        android:text="FirstActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"/>
-    <Button
-        android:id="@+id/first2_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="启动SecondActivity"/>
+    android:orientation="vertical"
+    tools:context="scut.luluteam.gutils.activity.ListActivity">
 
-    <TextView
-        android:id="@+id/task_tv"
+    <Button
+        android:id="@+id/refresh_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="refresh" />
+
+    <ListView
+        android:id="@+id/test_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>

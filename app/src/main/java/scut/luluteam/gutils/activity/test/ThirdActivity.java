@@ -9,8 +9,9 @@ import android.widget.TextView;
 
 import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.App;
+import scut.luluteam.gutils.app.BaseActivity;
 
-public class ThirdActivity extends AppCompatActivity {
+public class ThirdActivity extends BaseActivity {
     Button third1_btn;
 
     @Override
