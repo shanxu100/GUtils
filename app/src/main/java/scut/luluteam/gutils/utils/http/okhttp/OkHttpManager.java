@@ -86,7 +86,7 @@ public class OkHttpManager {
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .writeTimeout(30L, TimeUnit.SECONDS);//30秒
         if (isHttps) {
-            if (null == sslParams) {
+            if (null != sslParams) {
                 builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
             } else {
                 Log.e(TAG, "https未初始化：sslParams==null");

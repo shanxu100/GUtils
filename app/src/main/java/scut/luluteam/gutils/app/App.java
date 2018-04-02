@@ -2,6 +2,8 @@ package scut.luluteam.gutils.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 
 
@@ -78,5 +80,38 @@ public class App extends Application {
         return appContext;
     }
 
+
+    /**
+     * 版本号
+     *
+     * @return
+     */
+    public static int getVersionCode() {
+        PackageInfo packageInfo = null;
+        try {
+            PackageManager pm = appContext.getPackageManager();
+            packageInfo = pm.getPackageInfo(appContext.getPackageName(), PackageManager.GET_CONFIGURATIONS);
+            return packageInfo.versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 获取版本名
+     * @return
+     */
+    public static String getVersionName()//获取版本号
+    {
+        try {
+            PackageInfo pi = appContext.getPackageManager().getPackageInfo(appContext.getPackageName(), 0);
+            return pi.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "unknown version name";
+        }
+    }
 
 }

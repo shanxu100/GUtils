@@ -28,6 +28,7 @@ import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
 
 import scut.luluteam.gutils.service.Down_UploadService;
+import scut.luluteam.gutils.service.UpdateService;
 import scut.luluteam.gutils.service.floatwindow.FloatWinService;
 import scut.luluteam.gutils.service.mqtt.MQTTService;
 import scut.luluteam.gutils.service.mqtt.MessageSender;
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity {
         test4_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testWebView();
+                testUpdateService();
             }
         });
 
@@ -152,8 +153,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 //                System.out.println(event.getAction());
-                if (event.getAction()==MotionEvent.ACTION_UP)
-                {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     System.out.println("onTouch");
                 }
                 //一定要true
@@ -437,6 +437,11 @@ public class MainActivity extends BaseActivity {
     private void testWebView() {
         Intent intent = new Intent(this, WebViewActivity.class);
         startActivity(intent);
+    }
+
+    private void testUpdateService() {
+        Intent intent = new Intent(this, UpdateService.class);
+        startService(intent);
     }
 
 

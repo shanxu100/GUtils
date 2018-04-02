@@ -42,13 +42,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity android:name=".activity.MainActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <service
@@ -140,9 +137,7 @@
 
         <activity
             android:name=".activity.test.FirstActivity"
-            android:launchMode="standard">
-
-        </activity>
+            android:launchMode="standard"></activity>
         <activity
             android:name=".activity.test.SecondActivity"
             android:launchMode="singleTask" />
@@ -153,12 +148,26 @@
         <service android:name=".activity.test.FirstActivity$TestIntentService" />
 
         <activity android:name=".activity.ListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
+
+        <service
+            android:name=".service.UpdateService"
+            android:exported="false"></service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="scut.luluteam.gutils.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
