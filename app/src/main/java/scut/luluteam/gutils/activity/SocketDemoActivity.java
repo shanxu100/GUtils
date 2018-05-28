@@ -8,10 +8,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -93,7 +89,7 @@ public class SocketDemoActivity extends BaseActivity implements Runnable {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-            ShowUtil.LogAndToast(mContext,"login exception" + ex.getMessage());
+            ShowUtil.UIToast(mContext,"login exception" + ex.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

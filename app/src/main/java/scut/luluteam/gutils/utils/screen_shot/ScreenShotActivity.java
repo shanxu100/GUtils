@@ -33,7 +33,7 @@ public class ScreenShotActivity extends Activity {
             mediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
             startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
         } else {
-            ShowUtil.LogAndToast("版本过低,无法截屏");
+            ShowUtil.UIToast("版本过低,无法截屏");
             this.finish();
         }
     }
@@ -43,12 +43,12 @@ public class ScreenShotActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_MEDIA_PROJECTION) {
             if (resultCode == RESULT_OK) {
-                //ShowUtil.LogAndToast("user Permitted");
+                //ShowUtil.UIToast("user Permitted");
                 Log.e(TAG, "ScreenShot has been Permitted by user");
                 ScreenShot.setInitData(resultCode, data);
                 this.finish();
             } else if (resultCode == RESULT_CANCELED) {
-                ShowUtil.LogAndToast("ScreenShot has been Canceled");
+                ShowUtil.UIToast("ScreenShot has been Canceled");
                 this.finish();
             }
         }

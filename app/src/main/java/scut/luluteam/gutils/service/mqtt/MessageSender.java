@@ -44,7 +44,7 @@ public class MessageSender {
                         mqttMessage.isDone = isDone;
                         sendMessage(topic, GsonUtil.getGsonInstance().toJson(mqttMessage));
                         if (isDone) {
-                            ShowUtil.LogAndToast(mContext, "文件发送完毕");
+                            ShowUtil.UIToast(mContext, "文件发送完毕");
                             EventBus.getDefault().post(builder.isDone(true).build());
                         }
                     }

@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Down_UploadService extends Service {
+public class DownUploadService extends Service {
 
     public enum ServiceOperation {DOWNLOAD, UPLOAD}
 
@@ -27,16 +27,16 @@ public class Down_UploadService extends Service {
     String TAG_NOTIFICATION_DOWNLOAD = "TAG_NOTIFICATION_DOWNLOAD";
     int ID_NOTIFICATION_UPLOAD = 4101;
 
-    String TAG = "Down_UploadService";
+    String TAG = "DownUploadService";
 
-    public Down_UploadService() {
+    public DownUploadService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
-        Log.e(TAG, "Down_UploadService is on Create");
+        Log.e(TAG, "DownUploadService is on Create");
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Down_UploadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.e(TAG, "Down_UploadService is on Start");
+        Log.e(TAG, "DownUploadService is on Start");
         ServiceOperation operation = (ServiceOperation) intent.getSerializableExtra("operation");
         if (operation == ServiceOperation.DOWNLOAD) {
 

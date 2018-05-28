@@ -1,7 +1,6 @@
 package scut.luluteam.gutils.activity;
 
 import android.Manifest;
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,19 +14,16 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 
 import com.kyleduo.switchbutton.SwitchButton;
 
 import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
-import scut.luluteam.gutils.activity.tab.TabActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
 
-import scut.luluteam.gutils.service.Down_UploadService;
+import scut.luluteam.gutils.service.DownUploadService;
 import scut.luluteam.gutils.service.UpdateService;
 import scut.luluteam.gutils.service.floatwindow.FloatWinService;
 import scut.luluteam.gutils.service.mqtt.MQTTService;
@@ -45,7 +41,7 @@ import scut.luluteam.gutils.utils.lock_screen.DeviceManager;
 import scut.luluteam.gutils.utils.screen_shot.ScreenShotActivity;
 import scut.luluteam.gutils.view.G_AlertDialog;
 import scut.luluteam.gutils.view.G_InputDialog;
-import scut.luluteam.gutils.view.G_LoadingDialog;
+import scut.luluteam.gutils.view.LoadingDialog;
 import scut.luluteam.gutils.view.G_RadioGroupDialog;
 import scut.luluteam.gutils.view.G_SwitchDialog;
 import scut.luluteam.gutils.R;
@@ -57,8 +53,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainActivity extends BaseActivity {
 
@@ -242,7 +236,7 @@ public class MainActivity extends BaseActivity {
         inputDialog.setCallback(new G_InputDialog.InputDialogCallback() {
             @Override
             public void onPositive(String s) {
-                ShowUtil.LogAndToast(mContext, s);
+                ShowUtil.UIToast(mContext, s);
                 inputDialog.dismiss();
             }
 
@@ -255,7 +249,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void testLoadingDialog() {
-        G_LoadingDialog loadingDialog = G_LoadingDialog.newInstance(mContext, "Loading");
+        LoadingDialog loadingDialog = LoadingDialog.newInstance(mContext, "Loading");
         loadingDialog.show();
     }
 
@@ -264,9 +258,9 @@ public class MainActivity extends BaseActivity {
         String localName = "balabala";
         String localPath = Environment.getExternalStorageDirectory().getPath();
 
-        Intent intent = new Intent(mContext, Down_UploadService.class);
-        intent.putExtra("operation", Down_UploadService.ServiceOperation.DOWNLOAD);
-        Down_UploadService.DownloadParams downloadParams = new Down_UploadService.DownloadParams(
+        Intent intent = new Intent(mContext, DownUploadService.class);
+        intent.putExtra("operation", DownUploadService.ServiceOperation.DOWNLOAD);
+        DownUploadService.DownloadParams downloadParams = new DownUploadService.DownloadParams(
                 localName,
                 url,
                 localPath,
@@ -356,7 +350,7 @@ public class MainActivity extends BaseActivity {
     public void testPermission() {
         int hasPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-            ShowUtil.LogAndToast("权限未赋予");
+            ShowUtil.UIToast("权限未赋予");
             /**
              * 弹出在其他应用上显示的设置页面
              */
@@ -472,7 +466,7 @@ public class MainActivity extends BaseActivity {
             Uri uri = data.getData();
             String filePath = UriUtil.getFilePathFromUri(getApplicationContext(), uri);
             try {
-                //G_LoadingDialog.getInstance(mContext, "正在发送文件……").showWithAnim();
+                //LoadingDialog.getInstance(mContext, "正在发送文件……").showWithAnim();
 
                 //MQTTService.MQTTManager.sendFile("TOPIC_TEST", filePath, mContext);
             } catch (Exception e) {
@@ -497,9 +491,9 @@ public class MainActivity extends BaseActivity {
     public void onEventBusMessage(EventBusMessage eventBusMessage) {
         if (eventBusMessage.type == EventBusMessage.MessageType.Loading) {
             if (eventBusMessage.isDone) {
-                //G_LoadingDialog.getInstance(mContext, "正在处理，请稍后……").dismiss();
+                //LoadingDialog.getInstance(mContext, "正在处理，请稍后……").dismiss();
             } else {
-                //G_LoadingDialog.getInstance(mContext, "正在处理，请稍后……").showWithAnim();
+                //LoadingDialog.getInstance(mContext, "正在处理，请稍后……").showWithAnim();
             }
 
         }

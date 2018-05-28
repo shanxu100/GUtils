@@ -37,7 +37,7 @@ public class HttpUtil {
                         if (((HttpURLConnection) conn).getResponseCode() == 200) {
                             String filename = conn.getURL().getFile();
                             //String filename = file.substring(file.lastIndexOf('/') + 1);
-                            //ShowUtil.LogAndToast(mContext, filename);
+                            //ShowUtil.UIToast(mContext, filename);
                             Log.e(TAG, filename);
                         }
                     } catch (IOException e) {

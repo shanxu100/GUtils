@@ -18,19 +18,19 @@ import scut.luluteam.gutils.utils.ShowUtil;
  * Created by guan on 5/19/17.
  */
 
-public class G_LoadingDialog extends Dialog {
+public class LoadingDialog extends Dialog {
     private TextView loading_tv;
     private Context mContext;
     private CancelLoadingCallback callback;
 
 
-    public static G_LoadingDialog newInstance(@NonNull Context mContext, String loadingText) {
-        G_LoadingDialog loadingDialog = new G_LoadingDialog(mContext);
+    public static LoadingDialog newInstance(@NonNull Context mContext, String loadingText) {
+        LoadingDialog loadingDialog = new LoadingDialog(mContext);
         loadingDialog.setLoadingText(loadingText);
         return loadingDialog;
     }
 
-    private G_LoadingDialog(@NonNull Context context) {
+    public LoadingDialog(@NonNull Context context) {
         super(context, R.style.Dialog_Dim);
         mContext = context;
         setCustomeDialog();
@@ -70,9 +70,9 @@ public class G_LoadingDialog extends Dialog {
                     callback.onCancelLoading();
                     this.dismiss();
                 }
-                ShowUtil.LogAndToast(mContext, "正在加载，请勿取消……");
+                ShowUtil.UIToast(mContext, "正在加载，请勿取消……");
             } else {
-                ShowUtil.LogAndToast(mContext, "再按一次取消加载……");
+                ShowUtil.UIToast(mContext, "再按一次取消加载……");
             }
             return true;
         } else {

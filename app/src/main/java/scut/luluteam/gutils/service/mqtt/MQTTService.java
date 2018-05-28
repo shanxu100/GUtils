@@ -203,7 +203,7 @@ public class MQTTService extends Service {
         private void startMQTT() {
             //检查状态
             if (currentState != MQTTState.STOPPED) {
-                ShowUtil.LogAndToast("MQTT Service is running. Do not start again.");
+                ShowUtil.UIToast("MQTT Service is running. Do not start again.");
                 return;
             }
 
@@ -231,7 +231,7 @@ public class MQTTService extends Service {
                     Log.e(TAG, "信消息到达\tmessageArrived:\t" +
                             "topic -- " + topic + "\t" +
                             "message -- " + message);
-                    //ShowUtil.LogAndToast(context, message.toString());
+                    //ShowUtil.UIToast(context, message.toString());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -280,7 +280,7 @@ public class MQTTService extends Service {
             if (currentState != MQTTState.RECONNECTING) {
                 return;
             }
-            ShowUtil.LogAndToast("Mqtt连接已断开，正在重连……");
+            ShowUtil.UIToast("Mqtt连接已断开，正在重连……");
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -289,7 +289,7 @@ public class MQTTService extends Service {
                         if (!mqttClient.isConnected()) {
                             return;
                         }
-                        ShowUtil.LogAndToast("Mqtt 连接成功");
+                        ShowUtil.UIToast("Mqtt 连接成功");
                         mqttClient.subscribe(Topics, Qoses);
                         currentState = MQTTState.RUNNING;
                         //EventBus.getDefault().post(new EventBusMessage(EventBusMessage.EventBusMessageType.NETWORKONLINE));
@@ -331,7 +331,7 @@ public class MQTTService extends Service {
         private void sendMessage(final String topic, final String json) {
 
             if (currentState != MQTTState.RUNNING) {
-                ShowUtil.LogAndToast("Mqtt Server is not running.");
+                ShowUtil.UIToast("Mqtt Server is not running.");
                 return;
             }
 

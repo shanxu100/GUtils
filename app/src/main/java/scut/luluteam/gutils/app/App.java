@@ -33,7 +33,7 @@ public class App extends Application {
         super.onCreate();
         appContext = getApplicationContext();
         initApp();
-        //ShowUtil.LogAndToast(appContext, "onCreate");
+        //ShowUtil.UIToast(appContext, "onCreate");
 
     }
 

@@ -57,7 +57,7 @@ public class MessageHandler {
 //
 //                MQTTConfig.StringMessage message = GsonUtil.fromJson(mqttMessage.toString(),
 //                        MQTTConfig.StringMessage.class);
-//                ShowUtil.LogAndToast("String");
+//                ShowUtil.UIToast("String");
 //
 //            } else if (MQTTConfig.MessageType.ACTION_LOCK_SCREEN == tmpMessage.type) {
 //

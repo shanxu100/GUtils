@@ -105,7 +105,7 @@ public class SocketService extends Service {
                             if (null != mUsername) {
                                 mSocket.emit("add user", mUsername);
                             }
-                            ShowUtil.LogAndToast(App.getAppContext(), "connected");
+                            ShowUtil.UIToast(App.getAppContext(), "connected");
                             isConnected = true;
                         }
                     }
@@ -119,7 +119,7 @@ public class SocketService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ShowUtil.LogAndToast(App.getAppContext(), "diconnected");
+                        ShowUtil.UIToast(App.getAppContext(), "diconnected");
                         isConnected = false;
                     }
                 });
@@ -133,7 +133,7 @@ public class SocketService extends Service {
                     @Override
                     public void run() {
                         //Log.e(TAG, "Error connecting");
-                        ShowUtil.LogAndToast(App.getAppContext(), "Error connecting");
+                        ShowUtil.UIToast(App.getAppContext(), "Error connecting");
                         isConnected = false;
                     }
                 });
@@ -152,7 +152,7 @@ public class SocketService extends Service {
                         try {
                             username = data.getString("username");
                             message = data.getString("message");
-                            ShowUtil.LogAndToast("receive new message:" + data.toString());
+                            ShowUtil.UIToast("receive new message:" + data.toString());
                         } catch (JSONException e) {
                             Log.e(TAG, e.getMessage());
                             return;
@@ -177,7 +177,7 @@ public class SocketService extends Service {
                         try {
                             username = data.getString("username");
                             numUsers = data.getInt("numUsers");
-                            ShowUtil.LogAndToast("receive new message:" + data.toString());
+                            ShowUtil.UIToast("receive new message:" + data.toString());
                         } catch (JSONException e) {
                             Log.e(TAG, e.getMessage());
                             return;
@@ -198,7 +198,7 @@ public class SocketService extends Service {
         private void start() {
 
             if (isConnected) {
-                ShowUtil.LogAndToast("Socket is connected");
+                ShowUtil.UIToast("Socket is connected");
                 return;
             }
 

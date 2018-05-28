@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "scut.luluteam.gutils"
         minSdkVersion 21
@@ -20,6 +20,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
 
     repositories {
@@ -36,34 +37,31 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //    申请权限
-    compile('com.github.hotchemi:permissionsdispatcher:2.4.0') {
+    implementation('com.github.hotchemi:permissionsdispatcher:2.4.0') {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-    compile('io.socket:socket.io-client:0.8.3') {
+    implementation('io.socket:socket.io-client:0.8.3') {
         exclude group: 'org.json', module: 'json'
     }
-
-    compile "org.java-websocket:Java-WebSocket:1.3.4"
-
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.ybq:Android-SpinKit:1.1.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.8.0'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.android.support:design:25.3.1'
-    compile 'io.netty:netty-all:4.1.16.Final'
-    compile 'com.kyleduo.switchbutton:library:2.0.0'
-    testCompile 'junit:junit:4.12'
+    implementation 'org.java-websocket:Java-WebSocket:1.3.4'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.android.support:design:25.3.1'
+    implementation 'io.netty:netty-all:4.1.16.Final'
+    implementation 'com.kyleduo.switchbutton:library:2.0.0'
+    implementation 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }
