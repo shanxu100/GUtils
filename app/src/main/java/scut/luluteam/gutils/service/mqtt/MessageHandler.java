@@ -3,10 +3,6 @@ package scut.luluteam.gutils.service.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import scut.luluteam.gutils.utils.GsonUtil;
-import scut.luluteam.gutils.utils.ShowUtil;
-import scut.luluteam.gutils.utils.lock_screen.DeviceManager;
-
 /**
  * Created by guan on 5/20/17.
  * <p>

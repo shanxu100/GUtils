@@ -6,10 +6,13 @@ android {
     defaultConfig {
         applicationId "scut.luluteam.gutils"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a"//只支持32位
+        }
     }
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
@@ -30,6 +33,21 @@ android {
         maven { url "https://jitpack.io" }
 
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/INDEX.LIST'
 
     }
 
@@ -62,6 +80,7 @@ dependencies {
     implementation 'com.android.support:design:25.3.1'
     implementation 'io.netty:netty-all:4.1.16.Final'
     implementation 'com.kyleduo.switchbutton:library:2.0.0'
+    implementation 'com.hikvision.ezviz:ezuikit:1.4'
     implementation 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }

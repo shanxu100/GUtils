@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 
-
 import java.io.File;
 
 import scut.luluteam.gutils.utils.DisplayUtil;

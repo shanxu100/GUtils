@@ -1,14 +1,9 @@
 package scut.luluteam.gutils.app;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
 
 import scut.luluteam.gutils.utils.CustomActivityManager;
 

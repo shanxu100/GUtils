@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
-
 import scut.luluteam.gutils.app.App;
 import scut.luluteam.gutils.utils.DisplayUtil;
 import scut.luluteam.gutils.utils.ImageUtil;

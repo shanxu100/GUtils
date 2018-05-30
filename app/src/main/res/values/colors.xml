@@ -12,7 +12,7 @@
 
     <color name="blue">#56abe4</color>
 
-    <color name="black">#000000</color>
+
     <color name="body_bg">#F3F2F2</color>
     <color name="transparent">#00000000</color>
     <color name="gold">#b89766</color>
@@ -21,11 +21,25 @@
     <color name="line_view">#cccccc</color>
     <color name="red">#ff0000</color>
     <color name="lightred">#f99a8e</color>
-    <color name="gray">#808080</color>
+
     <color name="gray_text">#666666</color>
 
     <color name="menu_fragment_background">#B3000000</color>
     <color name="menu_item_background">#f2f2f2</color>
     <color name="divider_color">#b5b5b5</color>
     <color name="transparency">#00000000</color>
+
+    <!--video-->
+    <color name="main_back">#FFF5F5F5</color>
+    <color name="color_white">#FFFFFFFF</color>
+    <color name="black">#ff000000</color>
+    <color name="gray">#ff888888</color>
+
+    <!-- scan color -->
+    <color name="viewfinder_frame">#929292</color>
+    <color name="viewfinder_laser">#fe5600</color>
+    <color name="viewfinder_mask">#000000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
 </resources>

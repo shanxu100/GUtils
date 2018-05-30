@@ -7,7 +7,6 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
 
-
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;

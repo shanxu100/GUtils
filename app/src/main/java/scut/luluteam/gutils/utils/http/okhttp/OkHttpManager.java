@@ -1,7 +1,6 @@
 package scut.luluteam.gutils.utils.http.okhttp;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.File;
@@ -11,8 +10,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.xml.transform.OutputKeys;
 
 import okhttp3.Call;
 import okhttp3.Callback;

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_debugInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <!-- 获取网站的标题-->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <!--开始加载提示-->
+        <TextView
+            android:id="@+id/text_beginLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:text="" />
+
+        <!--获取加载进度-->
+        <TextView
+            android:id="@+id/text_Loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_beginLoading"
+            android:text="" />
+
+        <!--结束加载提示-->
+        <TextView
+            android:id="@+id/text_endLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_Loading"
+            android:text="" />
+    </LinearLayout>
+
+
+
+    <!--显示网页区域-->
+
+    <FrameLayout
+        android:id="@+id/fl_videoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_debugInfo">
+
+    </FrameLayout>
+
+
+</RelativeLayout>

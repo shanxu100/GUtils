@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.App;
 import scut.luluteam.gutils.utils.DisplayUtil;
 import scut.luluteam.gutils.utils.ShowUtil;
-import scut.luluteam.gutils.R;
 
 import static scut.luluteam.gutils.utils.DisplayUtil.getStatusBarHeight;
 

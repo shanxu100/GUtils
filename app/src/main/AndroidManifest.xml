@@ -5,7 +5,7 @@
 
     <uses-sdk
         android:minSdkVersion="21"
-        android:targetSdkVersion="23"
+        android:targetSdkVersion="22"
         tools:overrideLibrary="io.crossbar.autobahn" />
 
     <!-- 有Camera，并且可以自动聚焦的设备 -->
@@ -31,6 +31,14 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <!-- 点亮屏幕 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.App"
@@ -42,11 +50,13 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service
@@ -148,15 +158,17 @@
 
         <service android:name=".activity.test.FirstActivity$TestIntentService" />
 
-        <activity android:name=".activity.ListActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+        <activity android:name=".activity.ListActivity" />
+        <activity
+            android:name=".activity.video.PlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".activity.video.PlayBackActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <service
             android:name=".service.UpdateService"
@@ -172,7 +184,18 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.databinding.BindingActivity"></activity>
+        <activity android:name=".activity.databinding.BindingActivity" />
+        <activity android:name=".activity.video.VideoMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.video.WebActivity"
+            android:hardwareAccelerated="true" />
+        <activity android:name=".activity.video.WebVideoActivity"></activity>
     </application>
 
 </manifest>

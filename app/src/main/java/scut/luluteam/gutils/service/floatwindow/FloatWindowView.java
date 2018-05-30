@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-
 import java.lang.reflect.Field;
 
 import scut.luluteam.gutils.R;

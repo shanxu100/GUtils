@@ -1,7 +1,7 @@
 package scut.luluteam.gutils.activity.databinding;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import scut.luluteam.gutils.R;
 

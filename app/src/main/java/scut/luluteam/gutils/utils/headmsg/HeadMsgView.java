@@ -8,7 +8,6 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
 
-
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
