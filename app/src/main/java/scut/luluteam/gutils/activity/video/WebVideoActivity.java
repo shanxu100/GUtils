@@ -17,6 +17,12 @@ import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.activity.video.webview.MyWebViewClient;
 import scut.luluteam.gutils.app.BaseActivity;
 
+
+/**
+ * 加载WebView，实现视频播放
+ *
+ * @author Guan
+ */
 public class WebVideoActivity extends BaseActivity {
 
     private WebView webView;

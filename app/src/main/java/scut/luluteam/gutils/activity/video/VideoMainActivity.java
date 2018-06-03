@@ -1,5 +1,6 @@
 package scut.luluteam.gutils.activity.video;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +10,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 
 import scut.luluteam.gutils.R;
+import scut.luluteam.gutils.activity.video.model.AccessTokenResult;
 import scut.luluteam.gutils.activity.video.model.CameraListResult;
 import scut.luluteam.gutils.activity.video.model.SourceListResult;
+import scut.luluteam.gutils.activity.video.other.AccessTokenUtil;
+import scut.luluteam.gutils.activity.video.other.EZOPENUtil;
+import scut.luluteam.gutils.activity.video.other.VideoConstant;
 import scut.luluteam.gutils.app.BaseActivity;
+import scut.luluteam.gutils.utils.SharedPreferencesUtil;
+import scut.luluteam.gutils.utils.ToastUtil;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
 public class VideoMainActivity extends BaseActivity {
@@ -25,6 +35,38 @@ public class VideoMainActivity extends BaseActivity {
     private ListView lv_videoList;
     private ArrayAdapter<String> videListAdapter;
     private CameraListResult cameraListResult;
+
+    private String tmpRes = "{\n" +
+            "    \"page\": {\n" +
+            "        \"total\": 2,\n" +
+            "        \"page\": 0,\n" +
+            "        \"size\": 10\n" +
+            "    },\n" +
+            "    \"data\": [\n" +
+            "        {\n" +
+            "            \"deviceSerial\": \"427734444\",\n" +
+            "            \"channelNo\": 1,\n" +
+            "            \"channelName\": \"C1(427734444)\",\n" +
+            "            \"status\": 1,\n" +
+            "            \"isShared\": \"1\",\n" +
+            "            \"picUrl\": \"http://img.ys7.com/group1/M00/02/B4/CmGCA1dRGyuAdJ_RAABJBCB_Re4796.jpg\",\n" +
+            "            \"isEncrypt\": 1,\n" +
+            "            \"videoLevel\": 2\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"deviceSerial\": \"519544444\",\n" +
+            "            \"channelNo\": 1,\n" +
+            "            \"channelName\": \"C2C(519544444)\",\n" +
+            "            \"status\": 0,\n" +
+            "            \"isShared\": \"2\",\n" +
+            "            \"picUrl\": \"https://i.ys7.com/assets/imgs/public/homeDevice.jpeg\",\n" +
+            "            \"isEncrypt\": 0,\n" +
+            "            \"videoLevel\": 2\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"code\": \"200\",\n" +
+            "    \"msg\": \"操作成功!\"\n" +
+            "}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +91,35 @@ public class VideoMainActivity extends BaseActivity {
                 }
                 CameraListResult.Item item = cameraListResult.getData().get(position);
                 //1、必须使用EZOPEN协议
-//                PlayActivity.startPlayActivity(mContext, "", "",
-//                        EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo()));
+                PlayActivity.startPlayActivity(mContext, VideoConstant.Config.APPKEY, AccessTokenUtil.getSavedAccessToken(mContext),
+                        EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo()));
 
                 //2、实现H5播放
 //                loadPlayUrl(item);
 
-                startActivity(new Intent(mContext, WebVideoActivity.class));
+//                startActivity(new Intent(mContext, WebVideoActivity.class));
 
 
             }
         });
-        loadVideoList();
+        //加载并刷新accessToken
+        AccessTokenUtil.initAccessToken(mContext, new AccessTokenUtil.AccessTokenCallback() {
+            @Override
+            public void onSuccess() {
+                loadVideoList(AccessTokenUtil.getSavedAccessToken(mContext));
+            }
+        });
 
     }
 
-    private void loadVideoList() {
-        String GET_CAMERA_LIST = "https://open.ys7.com/api/lapp/camera/list";
-//        String String
+
+    /**
+     * 加载摄像头列表
+     */
+    private void loadVideoList(String accessToken) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("accessToken", "");
-        OkHttpManager.CommonPostAsyn(GET_CAMERA_LIST, params, new OkHttpManager.ResultCallback() {
+        params.put("accessToken", accessToken);
+        OkHttpManager.CommonPostAsyn(VideoConstant.GET_CAMERA_LIST, params, new OkHttpManager.ResultCallback() {
             @Override
             public void onCallBack(final OkHttpManager.State state, final String result) {
                 Log.i(TAG, "获取Camera列表： " + result);
@@ -77,52 +127,34 @@ public class VideoMainActivity extends BaseActivity {
                     @Override
                     public void run() {
                         if (state == OkHttpManager.State.SUCCESS) {
-                            String tmpRes = "{\n" +
-                                    "    \"page\": {\n" +
-                                    "        \"total\": 2,\n" +
-                                    "        \"page\": 0,\n" +
-                                    "        \"size\": 10\n" +
-                                    "    },\n" +
-                                    "    \"data\": [\n" +
-                                    "        {\n" +
-                                    "            \"deviceSerial\": \"427734444\",\n" +
-                                    "            \"channelNo\": 1,\n" +
-                                    "            \"channelName\": \"C1(427734444)\",\n" +
-                                    "            \"status\": 1,\n" +
-                                    "            \"isShared\": \"1\",\n" +
-                                    "            \"picUrl\": \"http://img.ys7.com/group1/M00/02/B4/CmGCA1dRGyuAdJ_RAABJBCB_Re4796.jpg\",\n" +
-                                    "            \"isEncrypt\": 1,\n" +
-                                    "            \"videoLevel\": 2\n" +
-                                    "        },\n" +
-                                    "        {\n" +
-                                    "            \"deviceSerial\": \"519544444\",\n" +
-                                    "            \"channelNo\": 1,\n" +
-                                    "            \"channelName\": \"C2C(519544444)\",\n" +
-                                    "            \"status\": 0,\n" +
-                                    "            \"isShared\": \"2\",\n" +
-                                    "            \"picUrl\": \"https://i.ys7.com/assets/imgs/public/homeDevice.jpeg\",\n" +
-                                    "            \"isEncrypt\": 0,\n" +
-                                    "            \"videoLevel\": 2\n" +
-                                    "        }\n" +
-                                    "    ],\n" +
-                                    "    \"code\": \"200\",\n" +
-                                    "    \"msg\": \"操作成功!\"\n" +
-                                    "}";
+                            //TODO tmpRes --> result
                             cameraListResult = new Gson().fromJson(tmpRes, CameraListResult.class);
                             refreshVideoList(cameraListResult);
                         } else {
-                            //toast 获取设备列表失败
+                            ToastUtil.logAndToast(mContext, "获取设备列表失败：" + result);
                         }
                     }
                 });
-
 
             }
         });
     }
 
+
     /**
-     * 获取RTMP、HLS播放源
+     * 更新列表的显示
+     *
+     * @param cameraListResult
+     */
+    private void refreshVideoList(CameraListResult cameraListResult) {
+        videListAdapter.clear();
+        videListAdapter.addAll(cameraListResult.getAllInfoList());
+        videListAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 获取RTMP、HLS播放源，
+     * 用于H5页面的播放
      *
      * @param item
      */
@@ -156,17 +188,6 @@ public class VideoMainActivity extends BaseActivity {
         });
 
 
-    }
-
-    /**
-     * 更新列表的显示
-     *
-     * @param cameraListResult
-     */
-    private void refreshVideoList(CameraListResult cameraListResult) {
-        videListAdapter.clear();
-        videListAdapter.addAll(cameraListResult.getAllInfoList());
-        videListAdapter.notifyDataSetChanged();
     }
 
     /**
