@@ -42,6 +42,7 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
     private EZUIPlayer mEZUIPlayer;
 
     private Button mBtnPlay;
+    private Button btn_changeScreen;
     /**
      * onresume时是否恢复播放
      */
@@ -49,16 +50,19 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
 
     private MyOrientationDetector mOrientationDetector;
 
+
+    private WindowSizeChangeNotifier mWindowSizeChangeNotifier;
+
     /**
-     *  开发者申请的Appkey
+     * 开发者申请的Appkey
      */
     private String appkey;
     /**
-     *  授权accesstoken
+     * 授权accesstoken
      */
     private String accesstoken;
     /**
-     *  播放url：ezopen协议
+     * 播放url：ezopen协议
      */
     private String playUrl;
 
@@ -70,33 +74,36 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
 
     /**
      * 开启预览播放
+     *
      * @param context
-     * @param appkey       开发者申请的appkey
-     * @param accesstoken   开发者登录授权的accesstoken
-     * @param url           预览url
+     * @param appkey      开发者申请的appkey
+     * @param accesstoken 开发者登录授权的accesstoken
+     * @param url         预览url
      */
-    public static void startPlayActivity(Context context, String appkey, String accesstoken, String url){
+    public static void startPlayActivity(Context context, String appkey, String accesstoken, String url) {
+        Log.e(TAG, "开启预览播放:appKey=" + appkey + " accesstoken=" + accesstoken + " url= " + url);
         Intent intent = new Intent(context, PlayActivity.class);
-        intent.putExtra(APPKEY,appkey);
-        intent.putExtra(AccessToekn,accesstoken);
-        intent.putExtra(PLAY_URL,url);
+        intent.putExtra(APPKEY, appkey);
+        intent.putExtra(AccessToekn, accesstoken);
+        intent.putExtra(PLAY_URL, url);
         context.startActivity(intent);
     }
 
     /**
      * 开启海外版本预览播放
+     *
      * @param context
-     * @param appkey       开发者申请的appkey
-     * @param accesstoken   开发者登录授权的accesstoken
-     * @param url           预览url
+     * @param appkey             开发者申请的appkey
+     * @param accesstoken        开发者登录授权的accesstoken
+     * @param url                预览url
      * @param global_AreanDomain 海外版本域名
      */
-    public static void startPlayActivityGlobal(Context context, String appkey, String accesstoken, String url, String global_AreanDomain){
+    public static void startPlayActivityGlobal(Context context, String appkey, String accesstoken, String url, String global_AreanDomain) {
         Intent intent = new Intent(context, PlayActivity.class);
-        intent.putExtra(APPKEY,appkey);
-        intent.putExtra(AccessToekn,accesstoken);
-        intent.putExtra(PLAY_URL,url);
-        intent.putExtra(Global_AreanDomain,global_AreanDomain);
+        intent.putExtra(APPKEY, appkey);
+        intent.putExtra(AccessToekn, accesstoken);
+        intent.putExtra(PLAY_URL, url);
+        intent.putExtra(Global_AreanDomain, global_AreanDomain);
         context.startActivity(intent);
     }
 
@@ -106,7 +113,7 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
-        LogUtil.d(TAG,"onCreate");
+        LogUtil.d(TAG, "onCreate");
         setContentView(R.layout.activity_play);
         Intent intent = getIntent();
         appkey = intent.getStringExtra(APPKEY);
@@ -115,14 +122,15 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
         mGlobalAreaDomain = intent.getStringExtra(Global_AreanDomain);
         if (TextUtils.isEmpty(appkey)
                 || TextUtils.isEmpty(accesstoken)
-                || TextUtils.isEmpty(playUrl)){
-            Toast.makeText(this,"appkey,accesstoken or playUrl is null", Toast.LENGTH_LONG).show();
+                || TextUtils.isEmpty(playUrl)) {
+            Toast.makeText(this, "appkey,accesstoken or playUrl is null", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
         mOrientationDetector = new MyOrientationDetector(this);
-        new WindowSizeChangeNotifier(this, this);
+        mWindowSizeChangeNotifier = new WindowSizeChangeNotifier(this, this);
         mBtnPlay = (Button) findViewById(R.id.btn_play);
+        btn_changeScreen = (Button) findViewById(R.id.btn_changeScreen);
 
         //获取EZUIPlayer实例
         mEZUIPlayer = (EZUIPlayer) findViewById(R.id.player_ui);
@@ -130,6 +138,8 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
         mEZUIPlayer.setLoadingView(initProgressBar());
 
         mBtnPlay.setOnClickListener(this);
+        btn_changeScreen.setOnClickListener(this);
+        btn_changeScreen.setVisibility(View.GONE);
         mBtnPlay.setText(R.string.string_stop_play);
         preparePlay();
         setSurfaceSize();
@@ -137,35 +147,36 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
 
     /**
      * 创建加载view
+     *
      * @return
      */
     private View initProgressBar() {
         RelativeLayout relativeLayout = new RelativeLayout(this);
         relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         relativeLayout.setLayoutParams(lp);
-        RelativeLayout.LayoutParams rlp=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         rlp.addRule(RelativeLayout.CENTER_IN_PARENT);//addRule参数对应RelativeLayout XML布局的属性
         ProgressBar mProgressBar = new ProgressBar(this);
         mProgressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress));
-        relativeLayout.addView(mProgressBar,rlp);
+        relativeLayout.addView(mProgressBar, rlp);
         return relativeLayout;
     }
 
     /**
      * 准备播放资源参数
      */
-    private void preparePlay(){
+    private void preparePlay() {
         //设置debug模式，输出log信息
         EZUIKit.setDebug(true);
         if (TextUtils.isEmpty(mGlobalAreaDomain)) {
             //appkey初始化
             EZUIKit.initWithAppKey(this.getApplication(), appkey);
 
-        }else{
+        } else {
             //appkey初始化 海外版本
-            EZUIKit.initWithAppKeyGlobal(this.getApplication(), appkey,mGlobalAreaDomain);
+            EZUIKit.initWithAppKeyGlobal(this.getApplication(), appkey, mGlobalAreaDomain);
         }
         //设置授权accesstoken
         EZUIKit.setAccessToken(accesstoken);
@@ -173,11 +184,12 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
         mEZUIPlayer.setCallBack(this);
         mEZUIPlayer.setUrl(playUrl);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         mOrientationDetector.enable();
-        Log.d(TAG,"onResume");
+        Log.d(TAG, "onResume");
         //界面stop时，如果在播放，那isResumePlay标志位置为true，resume时恢复播放
         if (isResumePlay) {
             isResumePlay = false;
@@ -195,7 +207,7 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG,"onStop + "+mEZUIPlayer.getStatus());
+        Log.d(TAG, "onStop + " + mEZUIPlayer.getStatus());
         //界面stop时，如果在播放，那isResumePlay标志位置为true，以便resume时恢复播放
         if (mEZUIPlayer.getStatus() != EZUIPlayer.STATUS_STOP) {
             isResumePlay = true;
@@ -207,10 +219,9 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"onDestroy");
+        Log.d(TAG, "onDestroy");
 
-        if (mEZUIPlayer!=null)
-        {
+        if (mEZUIPlayer != null) {
             //释放资源
             mEZUIPlayer.releasePlayer();
         }
@@ -219,56 +230,56 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
 
     @Override
     public void onPlaySuccess() {
-        Log.d(TAG,"onPlaySuccess");
+        Log.d(TAG, "onPlaySuccess");
         // TODO: 2017/2/7 播放成功处理
         mBtnPlay.setText(R.string.string_pause_play);
     }
 
     @Override
     public void onPlayFail(EZUIError error) {
-        Log.d(TAG,"onPlayFail");
+        Log.d(TAG, "onPlayFail");
         // TODO: 2017/2/21 播放失败处理
-        if (error.getErrorString().equals(EZUIError.UE_ERROR_INNER_VERIFYCODE_ERROR)){
+        if (error.getErrorString().equals(EZUIError.UE_ERROR_INNER_VERIFYCODE_ERROR)) {
 
-        }else if(error.getErrorString().equalsIgnoreCase(EZUIError.UE_ERROR_NOT_FOUND_RECORD_FILES)){
+        } else if (error.getErrorString().equalsIgnoreCase(EZUIError.UE_ERROR_NOT_FOUND_RECORD_FILES)) {
             // TODO: 2017/5/12
             //未发现录像文件
-            Toast.makeText(this,getString(R.string.string_not_found_recordfile), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.string_not_found_recordfile), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onVideoSizeChange(int width, int height) {
         // TODO: 2017/2/16 播放视频分辨率回调
-        Log.d(TAG,"onVideoSizeChange  width = "+width+"   height = "+height);
+        Log.d(TAG, "onVideoSizeChange  width = " + width + "   height = " + height);
     }
 
     @Override
     public void onPrepared() {
-        Log.d(TAG,"onPrepared");
+        Log.d(TAG, "onPrepared");
         //播放
         mEZUIPlayer.startPlay();
     }
 
     @Override
     public void onPlayTime(Calendar calendar) {
-        Log.d(TAG,"onPlayTime");
+        Log.d(TAG, "onPlayTime");
         if (calendar != null) {
             // TODO: 2017/2/16 当前播放时间
-            Log.d(TAG,"onPlayTime calendar = "+calendar.getTime().toString());
+            Log.d(TAG, "onPlayTime calendar = " + calendar.getTime().toString());
         }
     }
 
     @Override
     public void onPlayFinish() {
         // TODO: 2017/2/16 播放结束
-        Log.d(TAG,"onPlayFinish");
+        Log.d(TAG, "onPlayFinish");
     }
 
 
     @Override
     public void onClick(View view) {
-        if (view == mBtnPlay){
+        if (view == mBtnPlay) {
             // TODO: 2017/2/14
             if (mEZUIPlayer.getStatus() == EZUIPlayer.STATUS_PLAY) {
                 //播放状态，点击停止播放
@@ -279,6 +290,8 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
                 mBtnPlay.setText(R.string.string_stop_play);
                 mEZUIPlayer.startPlay();
             }
+        } else if (view == btn_changeScreen) {
+            Log.i(TAG, "点击旋转屏幕");
         }
     }
 
@@ -289,11 +302,11 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d(TAG,"onConfigurationChanged");
+        Log.e(TAG, "onConfigurationChanged==========");
         setSurfaceSize();
     }
 
-    private void setSurfaceSize(){
+    private void setSurfaceSize() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         boolean isWideScrren = mOrientationDetector.isWideScrren();
@@ -301,9 +314,12 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
         if (!isWideScrren) {
             //竖屏调整播放区域大小，宽全屏，高根据视频分辨率自适应
             mEZUIPlayer.setSurfaceSize(dm.widthPixels, 0);
+            Log.e(TAG, "设置为竖屏：" + dm.widthPixels);
         } else {
             //横屏屏调整播放区域大小，宽、高均全屏，播放区域根据视频分辨率自适应
-            mEZUIPlayer.setSurfaceSize(dm.widthPixels,dm.heightPixels);
+            mEZUIPlayer.setSurfaceSize(dm.widthPixels, dm.heightPixels);
+            Log.e(TAG, "设置为横屏：" + dm.widthPixels + "  " + dm.heightPixels);
+
         }
     }
 
@@ -311,8 +327,10 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
     public void onWindowSizeChanged(int w, int h, int oldW, int oldH) {
         if (mEZUIPlayer != null) {
             setSurfaceSize();
+            Log.e(TAG, "onWindowSizeChanged=============");
         }
     }
+
 
     public class MyOrientationDetector extends OrientationEventListener {
 
@@ -330,6 +348,7 @@ public class PlayActivity extends Activity implements View.OnClickListener, Wind
             display.getSize(pt);
             return pt.x > pt.y;
         }
+
         @Override
         public void onOrientationChanged(int orientation) {
             int value = getCurentOrientationEx(orientation);

@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.android.support:design:25.3.1'
     implementation 'io.netty:netty-all:4.1.16.Final'
     implementation 'com.kyleduo.switchbutton:library:2.0.0'
-    implementation 'com.hikvision.ezviz:ezuikit:1.4'
+    implementation 'com.hikvision.ezviz:ezuikit:2.0'
     implementation 'junit:junit:4.12'
     implementation 'commons-lang:commons-lang:2.6'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'

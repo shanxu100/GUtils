@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -35,38 +36,8 @@ public class VideoMainActivity extends BaseActivity {
     private ListView lv_videoList;
     private ArrayAdapter<String> videListAdapter;
     private CameraListResult cameraListResult;
+    private SwipeRefreshLayout refreshLayout;
 
-    private String tmpRes = "{\n" +
-            "    \"page\": {\n" +
-            "        \"total\": 2,\n" +
-            "        \"page\": 0,\n" +
-            "        \"size\": 10\n" +
-            "    },\n" +
-            "    \"data\": [\n" +
-            "        {\n" +
-            "            \"deviceSerial\": \"427734444\",\n" +
-            "            \"channelNo\": 1,\n" +
-            "            \"channelName\": \"C1(427734444)\",\n" +
-            "            \"status\": 1,\n" +
-            "            \"isShared\": \"1\",\n" +
-            "            \"picUrl\": \"http://img.ys7.com/group1/M00/02/B4/CmGCA1dRGyuAdJ_RAABJBCB_Re4796.jpg\",\n" +
-            "            \"isEncrypt\": 1,\n" +
-            "            \"videoLevel\": 2\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"deviceSerial\": \"519544444\",\n" +
-            "            \"channelNo\": 1,\n" +
-            "            \"channelName\": \"C2C(519544444)\",\n" +
-            "            \"status\": 0,\n" +
-            "            \"isShared\": \"2\",\n" +
-            "            \"picUrl\": \"https://i.ys7.com/assets/imgs/public/homeDevice.jpeg\",\n" +
-            "            \"isEncrypt\": 0,\n" +
-            "            \"videoLevel\": 2\n" +
-            "        }\n" +
-            "    ],\n" +
-            "    \"code\": \"200\",\n" +
-            "    \"msg\": \"操作成功!\"\n" +
-            "}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +49,21 @@ public class VideoMainActivity extends BaseActivity {
 
     private void initUI() {
         lv_videoList = (ListView) findViewById(R.id.lv_videoList);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //加载并刷新accessToken
+                AccessTokenUtil.initAccessToken(mContext, new AccessTokenUtil.AccessTokenCallback() {
+                    @Override
+                    public void onSuccess() {
+                        loadVideoList(AccessTokenUtil.getSavedAccessToken(mContext));
+                    }
+                });
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     private void initData() {
@@ -90,9 +76,15 @@ public class VideoMainActivity extends BaseActivity {
                     return;
                 }
                 CameraListResult.Item item = cameraListResult.getData().get(position);
-                //1、必须使用EZOPEN协议
-                PlayActivity.startPlayActivity(mContext, VideoConstant.Config.APPKEY, AccessTokenUtil.getSavedAccessToken(mContext),
-                        EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo()));
+                if (item.getStatus() == 1) {
+                    //1、必须使用EZOPEN协议
+                    PlayActivity.startPlayActivity(mContext, VideoConstant.Config.APPKEY, AccessTokenUtil.getSavedAccessToken(mContext),
+                            EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo())
+                    );
+                } else {
+                    showOfflineDialog();
+                }
+
 
                 //2、实现H5播放
 //                loadPlayUrl(item);
@@ -128,7 +120,7 @@ public class VideoMainActivity extends BaseActivity {
                     public void run() {
                         if (state == OkHttpManager.State.SUCCESS) {
                             //TODO tmpRes --> result
-                            cameraListResult = new Gson().fromJson(tmpRes, CameraListResult.class);
+                            cameraListResult = new Gson().fromJson(result, CameraListResult.class);
                             refreshVideoList(cameraListResult);
                         } else {
                             ToastUtil.logAndToast(mContext, "获取设备列表失败：" + result);
@@ -218,6 +210,16 @@ public class VideoMainActivity extends BaseActivity {
         }).create().show();
 
 
+    }
+
+    /**
+     * 提示设备不在线
+     */
+    private void showOfflineDialog() {
+        new AlertDialog.Builder(mContext)
+                .setTitle("提示")
+                .setMessage("设备已离线，请检查摄像头网络连接。\n\n刷新后重试")
+                .show();
     }
 
 
