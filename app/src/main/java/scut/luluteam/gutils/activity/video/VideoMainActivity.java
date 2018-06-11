@@ -56,8 +56,8 @@ public class VideoMainActivity extends BaseActivity {
                 //加载并刷新accessToken
                 AccessTokenUtil.initAccessToken(mContext, new AccessTokenUtil.AccessTokenCallback() {
                     @Override
-                    public void onSuccess() {
-                        loadVideoList(AccessTokenUtil.getSavedAccessToken(mContext));
+                    public void onSuccess(String accessTokenJson) {
+                        loadVideoList(accessTokenJson);
                     }
                 });
                 refreshLayout.setRefreshing(false);
@@ -69,36 +69,12 @@ public class VideoMainActivity extends BaseActivity {
     private void initData() {
         videListAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1);
         lv_videoList.setAdapter(videListAdapter);
-        lv_videoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (cameraListResult == null) {
-                    return;
-                }
-                CameraListResult.Item item = cameraListResult.getData().get(position);
-                if (item.getStatus() == 1) {
-                    //1、必须使用EZOPEN协议
-                    PlayActivity.startPlayActivity(mContext, VideoConstant.Config.APPKEY, AccessTokenUtil.getSavedAccessToken(mContext),
-                            EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo())
-                    );
-                } else {
-                    showOfflineDialog();
-                }
-
-
-                //2、实现H5播放
-//                loadPlayUrl(item);
-
-//                startActivity(new Intent(mContext, WebVideoActivity.class));
-
-
-            }
-        });
+        lv_videoList.setOnItemClickListener(new MyOnItemClickListener());
         //加载并刷新accessToken
         AccessTokenUtil.initAccessToken(mContext, new AccessTokenUtil.AccessTokenCallback() {
             @Override
-            public void onSuccess() {
-                loadVideoList(AccessTokenUtil.getSavedAccessToken(mContext));
+            public void onSuccess(String accessTokenJson) {
+                loadVideoList(accessTokenJson);
             }
         });
 
@@ -212,14 +188,48 @@ public class VideoMainActivity extends BaseActivity {
 
     }
 
+
     /**
-     * 提示设备不在线
+     * 弹出提示框
+     *
+     * @param msg
      */
-    private void showOfflineDialog() {
+    private void showTipDialog(String msg) {
         new AlertDialog.Builder(mContext)
                 .setTitle("提示")
-                .setMessage("设备已离线，请检查摄像头网络连接。\n\n刷新后重试")
+                .setMessage(msg + "\n")
                 .show();
+    }
+
+
+    /**
+     * 点击ListView，弹出Dialog
+     */
+    private class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+
+        private static final String offlineMsg = "设备已离线，请检查摄像头网络连接。\n\n刷新后重试。";
+        private static final String isEncryptMsg = "设备已加密，请通知管理员关闭加密选项再观看。";
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (cameraListResult == null) {
+                return;
+            }
+            CameraListResult.Item item = cameraListResult.getData().get(i);
+            if (item.getStatus() != 1) {
+                showTipDialog(offlineMsg);
+                return;
+            }
+            if (item.getIsEncrypt() != 0) {
+                showTipDialog(isEncryptMsg);
+                return;
+            }
+
+            //检查完毕，可以播放视频。
+            // 必须使用EZOPEN协议
+            PlayActivity.startPlayActivity(mContext, VideoConstant.Config.APPKEY, AccessTokenUtil.getSavedAccessToken(mContext),
+                    EZOPENUtil.getLiveUrl(item.getDeviceSerial(), item.getChannelNo()));
+        }
     }
 
 
