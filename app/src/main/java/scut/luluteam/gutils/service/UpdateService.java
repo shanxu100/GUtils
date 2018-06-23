@@ -75,7 +75,7 @@ public class UpdateService extends Service {
      */
     private void checkUpdate() {
         Log.e(TAG, " App.getVersionCode()=" + App.getVersionCode());
-//        ShowUtil.logAndToast(getApplicationContext(), "正在检查更新...");
+//        ShowUtil.UIToast(getApplicationContext(), "正在检查更新...");
         OkHttpManager.CommonGetAsyn(CheckURL, null, new OkHttpManager.ResultCallback() {
             @Override
             public void onCallBack(OkHttpManager.State state, String result) {

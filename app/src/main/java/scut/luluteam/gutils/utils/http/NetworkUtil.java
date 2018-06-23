@@ -1,4 +1,4 @@
-package scut.luluteam.gutils.test.okhttp;
+package scut.luluteam.gutils.utils.http;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

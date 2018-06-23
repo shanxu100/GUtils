@@ -85,14 +85,13 @@ dependencies {
     implementation deps.retrofit.converterScalarsVersion
 
     implementation deps.okhttp
+    implementation deps.okhttp_logging_interceptor
     implementation deps.mqtt
     implementation deps.websocket
     implementation deps.gson
     implementation deps.spinkit
     implementation deps.eventbus
     implementation deps.commonslang
-
-
 
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 

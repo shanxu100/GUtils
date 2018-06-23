@@ -1,8 +1,6 @@
 package scut.luluteam.gutils.activity.video;
 
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -11,23 +9,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 
 import scut.luluteam.gutils.R;
-import scut.luluteam.gutils.activity.video.model.AccessTokenResult;
 import scut.luluteam.gutils.activity.video.model.CameraListResult;
 import scut.luluteam.gutils.activity.video.model.SourceListResult;
 import scut.luluteam.gutils.activity.video.other.AccessTokenUtil;
 import scut.luluteam.gutils.activity.video.other.EZOPENUtil;
 import scut.luluteam.gutils.activity.video.other.VideoConstant;
 import scut.luluteam.gutils.app.BaseActivity;
-import scut.luluteam.gutils.utils.SharedPreferencesUtil;
 import scut.luluteam.gutils.utils.ToastUtil;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
@@ -99,7 +92,7 @@ public class VideoMainActivity extends BaseActivity {
                             cameraListResult = new Gson().fromJson(result, CameraListResult.class);
                             refreshVideoList(cameraListResult);
                         } else {
-                            ToastUtil.logAndToast(mContext, "获取设备列表失败：" + result);
+                            ToastUtil.UIToast(mContext, "获取设备列表失败：" + result);
                         }
                     }
                 });

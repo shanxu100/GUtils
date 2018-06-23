@@ -38,7 +38,7 @@ import okio.Source;
  */
 public class OkHttpManager {
 
-    private static final String TAG = "OkHttpManager";
+    private static final String TAG = "OkHttpHolder";
     private static final String Network_Failure_Message = "Timeout：请检查网络连接。";
 
     private static HttpsUtils.SSLParams sslParams;

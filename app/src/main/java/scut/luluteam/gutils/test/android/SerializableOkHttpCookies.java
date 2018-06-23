@@ -1,4 +1,4 @@
-package scut.luluteam.gutils.test.okhttp;
+package scut.luluteam.gutils.test.android;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

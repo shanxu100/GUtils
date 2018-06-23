@@ -31,7 +31,7 @@ public class ToastUtil {
      * @param context
      * @param msg
      */
-    public static void logAndToast(final Context context, final String msg) {
+    public static void UIToast(final Context context, final String msg) {
 //        String TAG = context.toString();
 //        Log.e(TAG, msg);
 

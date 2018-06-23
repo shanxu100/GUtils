@@ -1,9 +1,7 @@
-package scut.luluteam.gutils.test.okhttp;
+package scut.luluteam.gutils.test.android;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 
 import java.io.IOException;
@@ -12,6 +10,8 @@ import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import scut.luluteam.gutils.utils.http.NetworkUtil;
+import scut.luluteam.gutils.utils.ToastUtil;
 
 /**
  * caheInterceptor
@@ -40,12 +40,7 @@ public class CaheInterceptor implements Interceptor {
                     .header("Cache-Control", "public, max-age=" + maxAge)
                     .build();
         } else {
-            ((Activity) context).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "当前无网络! 为你智能加载缓存", Toast.LENGTH_SHORT).show();
-                }
-            });
+            ToastUtil.UIToast(context,"当前无网络! 为你智能加载缓存");
             Log.e("Tamic", " no network load cahe");
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
