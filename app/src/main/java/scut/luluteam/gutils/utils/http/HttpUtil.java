@@ -10,7 +10,7 @@ import java.net.URLConnection;
 /**
  * Created by guan on 5/20/17.
  */
-
+@Deprecated
 public class HttpUtil {
 
     private static String TAG = "HttpUtil";

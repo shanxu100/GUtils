@@ -81,6 +81,7 @@ dependencies {
     implementation deps.rx_android2
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
+    implementation deps.retrofit.adapter
     implementation deps.retrofit.converterGsonVersion
     implementation deps.retrofit.converterScalarsVersion
 

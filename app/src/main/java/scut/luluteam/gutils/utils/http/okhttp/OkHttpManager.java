@@ -1,6 +1,6 @@
 package scut.luluteam.gutils.utils.http.okhttp;
 
-import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -20,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.Okio;
@@ -38,11 +39,13 @@ import okio.Source;
  */
 public class OkHttpManager {
 
-    private static final String TAG = "OkHttpHolder";
-    private static final String Network_Failure_Message = "Timeout：请检查网络连接。";
+    private static String TAG = "OkHttpManager";
 
+    private OkHttpClient mOkHttpClient;
     private static HttpsUtils.SSLParams sslParams;
 
+
+    //public static String FAILURE = "failure";
 
     /**
      * SUCCESS: 网络访问成功
@@ -53,7 +56,7 @@ public class OkHttpManager {
         SUCCESS, FAILURE, NETWORK_FAILURE
     }
 
-    private static final ResultCallback defaultResultCallback = new ResultCallback() {
+    private static ResultCallback defaultResultCallback = new ResultCallback() {
         @Override
         public void onCallBack(State state, String result) {
             Log.e(TAG, "由于未定义ResultCallback参数,以下信息未被处理" +
@@ -62,7 +65,8 @@ public class OkHttpManager {
         }
     };
 
-    private OkHttpClient mOkHttpClient;
+    private String Network_Failure_Message = "Timeout：请检查网络连接。";
+
 
     /**
      * 单例模式：
@@ -72,57 +76,42 @@ public class OkHttpManager {
      * http://www.cnblogs.com/lwbqqyumidi/p/3738059.html
      */
     private static class OkHttpManagerBuilder {
-        private static OkHttpManager okHttpManager = new OkHttpManager(false);
-        private static OkHttpManager okHttpsManager = new OkHttpManager(true);
+        private static OkHttpManager okHttpManager = new OkHttpManager();
     }
 
-    private OkHttpManager(boolean isHttps) {
-        //mOkHttpClient=new OkHttpClient();//使用默认配置
-        OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)//10000毫秒
+    private OkHttpManager() {
+        sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        mOkHttpClient = new OkHttpClient().newBuilder()
+                //10000毫秒
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                .writeTimeout(30L, TimeUnit.SECONDS);//30秒
-        if (isHttps) {
-            if (null != sslParams) {
-                builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
-            } else {
-                Log.e(TAG, "https未初始化：sslParams==null");
-            }
-        }
-        mOkHttpClient = builder.build();
-        Log.e(TAG, "调用了OkHttpManager一次");
+                //30秒
+                .writeTimeout(30L, TimeUnit.SECONDS)
+                //https
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .hostnameVerifier(sslParams.unSafeHostnameVerifier)
+                .addInterceptor(logging)
+                .build();
+//        Log.e(TAG, "调用了OkHttpManager一次");
 
     }
 
     private static OkHttpManager getInstance() {
         return OkHttpManagerBuilder.okHttpManager;
     }
+    //==========================以上是单例模式,以下是对外暴露的API=========================
+
 
     /**
-     * 未测试
+     * 获取OkHttpClient的对象，用于Retrofit
      *
      * @return
      */
-    private static OkHttpManager getHttpsInstance() {
-        return OkHttpManagerBuilder.okHttpsManager;
+    public static OkHttpClient getOkHttpClient() {
+        return getInstance().mOkHttpClient;
     }
-
-    /**
-     * 初始化Https的证书
-     *
-     * @param context
-     */
-    public static void initHttps(Context context) {
-        try {
-            //assets文件夹中的 cer 证书文件
-            InputStream[] certificates = new InputStream[]{context.getAssets().open("srca.cer")};
-            sslParams = HttpsUtils.getSslSocketFactory(certificates, null, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG, "https初始化失败");
-        }
-    }
-    //==========================以上是单例模式,以下是对外暴露的API=========================
 
 
     /**
@@ -199,7 +188,11 @@ public class OkHttpManager {
         if (params == null) {
             params = new HashMap<String, String>();
         }
-        getInstance().GetAsyn(url, params, callback);
+        try {
+            getInstance().GetAsyn(url, params, callback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -409,12 +402,10 @@ public class OkHttpManager {
         //application/x-www-form-urlencoded :
         //<form encType=””>中默认的encType，form表单数据被编码为key/value格式发送到服务器（表单默认的提交数据的格式）
 
+        // content-type: application/x-www-form-urlencoded
+
         //1.以表单的形式,由FormBody构建RequestBody
         FormBody.Builder builder = new FormBody.Builder();
-        //2.添加参数
-//        for (String key : params.keySet()) {
-//            builder.add(key, params.get(key));
-//        }
 
         for (Map.Entry entry : params.entrySet()) {
             builder.add((String) entry.getKey(), (String) entry.getValue());

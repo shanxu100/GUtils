@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,12 +25,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.activity.video.PlayActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
+import scut.luluteam.gutils.model.UserResult;
 import scut.luluteam.gutils.service.DownUploadService;
 import scut.luluteam.gutils.service.UpdateService;
 import scut.luluteam.gutils.service.floatwindow.FloatWinService;
@@ -44,6 +47,7 @@ import scut.luluteam.gutils.utils.UriUtil;
 import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
 import scut.luluteam.gutils.utils.headmsg.HeadsMsg;
 import scut.luluteam.gutils.utils.http.AsyncHttpURLConnection;
+import scut.luluteam.gutils.utils.http.retrofit.RetrofitUtil;
 import scut.luluteam.gutils.utils.lock_screen.DeviceManager;
 import scut.luluteam.gutils.utils.screen_shot.ScreenShotActivity;
 import scut.luluteam.gutils.view.G_AlertDialog;
@@ -94,7 +98,7 @@ public class MainActivity extends BaseActivity {
         test1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testActivity();
+                testRxAndRetrofit();
             }
         });
 
@@ -141,6 +145,7 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
 
+
         switchButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -182,6 +187,19 @@ public class MainActivity extends BaseActivity {
     }
 
 //===========================================================================================
+
+
+    private void testRxAndRetrofit() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("username", "luluteam");
+        RetrofitUtil.commomPostAsyn("http://121.199.23.184:8082/bathProject/user/findUser", params, new RetrofitUtil.Callback() {
+            @Override
+            public void onData(String data) {
+                UserResult userResult = new Gson().fromJson(data, UserResult.class);
+                System.out.println("=============" + userResult.toString());
+            }
+        });
+    }
 
     private void testSwitchDialog() {
         final G_SwitchDialog switchDialog = new G_SwitchDialog(mContext,

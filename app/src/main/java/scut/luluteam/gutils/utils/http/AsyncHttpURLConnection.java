@@ -32,6 +32,7 @@ import javax.net.ssl.X509TrustManager;
 /**
  * Asynchronous http requests implementation.
  */
+@Deprecated
 public class AsyncHttpURLConnection {
     private static final int HTTP_TIMEOUT_MS = 8000;
     private static final String HTTP_ORIGIN = ""; //AppRTC_Common.HTTP_ORIGIN;
