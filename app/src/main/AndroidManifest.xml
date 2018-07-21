@@ -148,8 +148,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".activity.test.FirstActivity"
-            android:launchMode="standard" />
+            android:name=".activity.test.FirstActivity" />
         <activity
             android:name=".activity.test.SecondActivity"
             android:launchMode="singleTask" />

@@ -84,10 +84,10 @@ public class OkHttpManager {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         mOkHttpClient = new OkHttpClient().newBuilder()
-                //10000毫秒
+                //10s
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                //30秒
+                //30s
                 .writeTimeout(30L, TimeUnit.SECONDS)
                 //https
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
@@ -563,14 +563,17 @@ public class OkHttpManager {
                     Log.v(TAG, "the request was successfully received, understood, and accepted.");
                     InputStream is = null;
                     byte[] buf = new byte[2048];
-                    int len = 0;//本次读取的字节数
-                    long currSize = 0;//当前已经读取的字节数
+                    //本次读取的字节数
+                    int len = 0;
+                    //当前已经读取的字节数
+                    long currSize = 0;
                     //总大小
                     long totalSize = Integer.valueOf(response.header("content-Length", "-1"));
 
                     FileOutputStream fos = null;
                     try {
-                        is = response.body().byteStream(); //获取返回的Stream
+                        //获取返回的Stream
+                        is = response.body().byteStream();
                         File dir = new File(fileDir);
                         if (!dir.exists()) {
                             dir.mkdirs();

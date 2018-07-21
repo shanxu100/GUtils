@@ -6,10 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import scut.luluteam.gutils.R;
+import scut.luluteam.gutils.activity.test.FirstActivity;
 import scut.luluteam.gutils.app.BaseFragment;
+import scut.luluteam.gutils.utils.http.retrofit.RetrofitUtil;
 
 
 /**
@@ -28,6 +33,7 @@ public class BlankFragment extends BaseFragment {
     private Toolbar content_toolbar;
     private TextView TBTitle_tv;
     protected TextView mTitle;
+    private Button btn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,8 +80,21 @@ public class BlankFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        System.out.println("======BlankFragment onDestroyView======" + mParam1);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("======BlankFragment onDestroy======" + mParam1);
+    }
+
     private void initView(View rootView) {
         mTitle = (TextView) rootView.findViewById(R.id.title);
+        btn = (Button) rootView.findViewById(R.id.btn);
 
         if (showToolbar) {
 
@@ -93,5 +112,25 @@ public class BlankFragment extends BaseFragment {
         }
 
         mTitle.setText(mParam1);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testRxAndRetrofit();
+            }
+        });
+    }
+
+
+    private void testRxAndRetrofit() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("username", "luluteam");
+        RetrofitUtil.commomPostAsyn("http://125.216.242.147:8080/netTest/log/delayInterface", params, RetrofitUtil.defaultContentType,
+                new RetrofitUtil.Callback() {
+                    @Override
+                    public void onData(String data) {
+                        mTitle.setText(data);
+                        System.out.println("=============" + data + "  getActivity=" + (getActivity() == null));
+                    }
+                });
     }
 }

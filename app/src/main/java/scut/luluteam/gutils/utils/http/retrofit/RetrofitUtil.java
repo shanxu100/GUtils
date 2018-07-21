@@ -1,11 +1,16 @@
 package scut.luluteam.gutils.utils.http.retrofit;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -21,7 +26,7 @@ import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 public class RetrofitUtil {
 
     private static final String TAG = "RetrofitUtil";
-    private static final String defaultContentType = "application/x-www-form-urlencoded; charset=utf-8";
+    public static final String defaultContentType = "application/x-www-form-urlencoded; charset=utf-8";
     private static RetrofitUtil instance;
 
 
@@ -34,6 +39,7 @@ public class RetrofitUtil {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
         retrofitBuilder.baseUrl(ReqApi.BASE_URL)
 //                .addConverterFactory(GsonConverterFactory.create())
+                //返回String的类型的
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(OkHttpManager.getOkHttpClient());
@@ -42,12 +48,13 @@ public class RetrofitUtil {
         defaultOnCompleteAction = new Action() {
             @Override
             public void run() throws Exception {
-
+                Log.i(TAG, "complete http request ");
             }
         };
         defaultOnErrorConsumer = new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                Log.e(TAG, "error on http request");
                 throwable.printStackTrace();
             }
         };
@@ -73,35 +80,49 @@ public class RetrofitUtil {
     //
     //==================================================================
 
+    public static <T> T create(String baseUrl, Class<T> classOfType) {
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        retrofitBuilder.baseUrl(baseUrl)
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(OkHttpManager.getOkHttpClient());
+        return retrofitBuilder.build().create(classOfType);
+    }
+
+    public static void commomPostAsyn(String url, Map<String, String> params, String contentType, final Callback callback) {
+        final Disposable disposable =
+                getReqApi().doPost(url, contentType, params)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                callback.onData(s);
+                            }
+                        }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction);
+    }
 
     public static void commomPostAsyn(String url, Map<String, String> params, final Callback callback) {
+        commomPostAsyn(url, params, defaultContentType, callback);
+    }
 
-        getReqApi().doPost(url, defaultContentType, params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        callback.onData(s);
-                    }
-                }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction)
-                //纯粹为了IDE不提示warning
-                .getClass();
+    public static void commomGetAsyn(String url, Map<String, String> params, String contentType, final Callback callback) {
+        Disposable disposable =
+                getReqApi().doGet(url, contentType, params)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                callback.onData(s);
+                            }
+                        }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction);
+
     }
 
     public static void commomGetAsyn(String url, Map<String, String> params, final Callback callback) {
-        getReqApi().doGet(url, defaultContentType, params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        callback.onData(s);
-                    }
-                }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction)
-                //
-                .getClass();
-
+        commomGetAsyn(url, params, defaultContentType, callback);
     }
 
     public static void commonPostJson(String url, String json, final Callback callback) {
@@ -112,17 +133,16 @@ public class RetrofitUtil {
                 postData = json.getBytes("UTF-8");
             }
             RequestBody jsonBody = RequestBody.create(JSON, postData);
-            getReqApi().doPostJson(url, jsonBody)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(String s) throws Exception {
-                            callback.onData(s);
-                        }
-                    }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction)
-
-                    .getClass();
+            Disposable disposable =
+                    getReqApi().doPostJson(url, jsonBody)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<String>() {
+                                @Override
+                                public void accept(String s) throws Exception {
+                                    callback.onData(s);
+                                }
+                            }, getInstance().defaultOnErrorConsumer, getInstance().defaultOnCompleteAction);
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

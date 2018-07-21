@@ -35,11 +35,13 @@ public interface ReqApi {
 
     @FormUrlEncoded
     @POST
-    Observable<String> doPost(@Url String url,@Header("Content-Type")String contentType, @FieldMap Map<String, String> map);
+    Observable<String> doPost(@Url String url, @Header("Content-Type") String contentType
+            , @FieldMap Map<String, String> map);
 
 
     @GET
-    Observable<String> doGet(@Url String url,@Header("Content-Type")String contentType, @QueryMap Map<String, String> map);
+    Observable<String> doGet(@Url String url, @Header("Content-Type") String contentType
+            , @QueryMap Map<String, String> map);
 
     @GET
     Observable<ResponseBody> doDownload(@Url String fileUrl);

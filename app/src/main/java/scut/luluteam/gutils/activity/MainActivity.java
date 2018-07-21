@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import scut.luluteam.gutils.R;
+import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
+import scut.luluteam.gutils.activity.test.FirstActivity;
 import scut.luluteam.gutils.activity.video.PlayActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
@@ -98,7 +100,7 @@ public class MainActivity extends BaseActivity {
         test1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testRxAndRetrofit();
+                testActivity();
             }
         });
 
@@ -189,17 +191,6 @@ public class MainActivity extends BaseActivity {
 //===========================================================================================
 
 
-    private void testRxAndRetrofit() {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("username", "luluteam");
-        RetrofitUtil.commomPostAsyn("http://121.199.23.184:8082/bathProject/user/findUser", params, new RetrofitUtil.Callback() {
-            @Override
-            public void onData(String data) {
-                UserResult userResult = new Gson().fromJson(data, UserResult.class);
-                System.out.println("=============" + userResult.toString());
-            }
-        });
-    }
 
     private void testSwitchDialog() {
         final G_SwitchDialog switchDialog = new G_SwitchDialog(mContext,
@@ -406,7 +397,7 @@ public class MainActivity extends BaseActivity {
 
     private void testActivity() {
         //GLSurfaceView.EGLWindowSurfaceFactory factory=new fa
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent = new Intent(this, OnlyTabActivity.class);
         startActivity(intent);
     }
 
