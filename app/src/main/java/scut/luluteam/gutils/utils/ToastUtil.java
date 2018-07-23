@@ -8,6 +8,7 @@ import android.widget.Toast;
 /**
  * Created by JJY on 2016/8/24.
  */
+@Deprecated
 public class ToastUtil {
 
     private static Handler handler;

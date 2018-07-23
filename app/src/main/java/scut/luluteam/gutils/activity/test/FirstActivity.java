@@ -1,20 +1,29 @@
 package scut.luluteam.gutils.activity.test;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+
 import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.app.BaseActivity;
+import scut.luluteam.gutils.model.UserResult;
+import scut.luluteam.gutils.utils.http.retrofit.RetrofitUtil;
 
-public class FirstActivity extends BaseActivity {
+public class FirstActivity extends AppCompatActivity {
 
     Button first2_btn;
+    TextView taskIdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +39,14 @@ public class FirstActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        TextView taskIdView = (TextView) findViewById(R.id.task_tv);
+        taskIdView = (TextView) findViewById(R.id.task_tv);
         taskIdView.setText("current task id: " + this.getTaskId());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy===="+FirstActivity.class.getSimpleName());
     }
 
     private void init() throws InterruptedException {
@@ -39,9 +54,10 @@ public class FirstActivity extends BaseActivity {
         first2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                testRxAndRetrofit();
 //                Intent intent = new Intent(App.getAppContext(), SecondActivity.class);
 //                startActivity(intent);
-                startService(new Intent(mContext,TestIntentService.class));
+//                startService(new Intent(mContext,TestIntentService.class));
 
             }
         });
@@ -71,13 +87,17 @@ public class FirstActivity extends BaseActivity {
 //        handler.sendEmptyMessage(0);
 //        task.executeOnExecutor();
 //        TestIntentService service=new TestIntentService("GuanService");
-        startService(new Intent(mContext,TestIntentService.class));
+//        startService(new Intent(mContext, TestIntentService.class));
 //        Thread.sleep(4000);
 //        startService(new Intent(mContext,TestIntentService.class));
 
 
-
     }
+
+
+
+
+
 
     public static class TestIntentService extends IntentService {
         public String TAG = "";
@@ -91,7 +111,6 @@ public class FirstActivity extends BaseActivity {
 
         /**
          * Creates an IntentService.  Invoked by your subclass's constructor.
-         *
          */
         public TestIntentService() {
             super("TestIntentService");
@@ -101,7 +120,7 @@ public class FirstActivity extends BaseActivity {
         protected void onHandleIntent(@Nullable Intent intent) {
 
             try {
-                Log.e("testIntentService", "TAG变量==" + TAG+"  ThreadName="+Thread.currentThread().getName());
+                Log.e("testIntentService", "TAG变量==" + TAG + "  ThreadName=" + Thread.currentThread().getName());
                 Log.e("testIntentService", "执行到了onHandleIntent,开始sleeping 2000");
                 Thread.sleep(2000);
                 Log.e("testIntentService", "结束sleep");

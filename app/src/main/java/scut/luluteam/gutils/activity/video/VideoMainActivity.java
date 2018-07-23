@@ -21,6 +21,7 @@ import scut.luluteam.gutils.activity.video.other.AccessTokenUtil;
 import scut.luluteam.gutils.activity.video.other.EZOPENUtil;
 import scut.luluteam.gutils.activity.video.other.VideoConstant;
 import scut.luluteam.gutils.app.BaseActivity;
+import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.ToastUtil;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
@@ -92,7 +93,7 @@ public class VideoMainActivity extends BaseActivity {
                             cameraListResult = new Gson().fromJson(result, CameraListResult.class);
                             refreshVideoList(cameraListResult);
                         } else {
-                            ToastUtil.UIToast(mContext, "获取设备列表失败：" + result);
+                            ShowUtil.UIToast(mContext, "获取设备列表失败：" + result);
                         }
                     }
                 });

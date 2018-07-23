@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import scut.luluteam.gutils.activity.video.model.AccessTokenResult;
 import scut.luluteam.gutils.utils.SharedPreferencesUtil;
+import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.ToastUtil;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
@@ -50,7 +51,7 @@ public class AccessTokenUtil {
                                     Log.i(TAG, "获取accessToken成功:" + result);
                                 }
                             } else {
-                                ToastUtil.UIToast(context, "获取AccessToken失败:" + result);
+                                ShowUtil.UIToast(context, "获取AccessToken失败:" + result);
                             }
                         }
                     });

@@ -32,7 +32,7 @@ public class ShowUtil {
      * @param msg
      */
     public static void UIToast(final Context context, final String msg) {
-        String TAG = context.toString();
+        String TAG = context.getClass().getSimpleName();
         Log.e(TAG, msg);
 
         if (handler == null) {

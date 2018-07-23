@@ -10,6 +10,7 @@ import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.http.NetworkUtil;
 import scut.luluteam.gutils.utils.ToastUtil;
 
@@ -40,7 +41,7 @@ public class CaheInterceptor implements Interceptor {
                     .header("Cache-Control", "public, max-age=" + maxAge)
                     .build();
         } else {
-            ToastUtil.UIToast(context,"当前无网络! 为你智能加载缓存");
+            ShowUtil.UIToast(context,"当前无网络! 为你智能加载缓存");
             Log.e("Tamic", " no network load cahe");
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
