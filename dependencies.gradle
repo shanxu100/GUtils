@@ -20,7 +20,7 @@
  **/
 ext.deps = [:]
 def versions = [:]
-versions.support = "25.3.1"
+versions.support = "26.1.0"
 versions.constraint_layout = "1.0.2"
 versions.android_gradle_plugin = "3.1.2"
 versions.junit = "4.12"

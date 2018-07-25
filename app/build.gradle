@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "scut.luluteam.gutils"
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a"//只支持32位
         }
@@ -17,10 +18,7 @@ android {
     dataBinding {
         enabled = true
     }
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,7 +31,15 @@ android {
         maven {
             url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
         }
+        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
         maven { url "https://jitpack.io" }
+        maven {
+            url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
+        }
+        //   TC
+//        mavenCentral()
+        jcenter()
+        google()
 
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 
@@ -55,6 +61,10 @@ android {
     }
 
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -70,15 +80,14 @@ dependencies {
     implementation('io.socket:socket.io-client:0.8.3') {
         exclude group: 'org.json', module: 'json'
     }
-
     // Support libraries
+    //    implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation deps.support.app_compat
     implementation deps.support.v4
     implementation deps.support.design
     implementation deps.support.cardview
     implementation deps.constraint_layout
     implementation deps.junit
-
     //RxJava
     implementation deps.rxjava2
     implementation deps.rx_android2
@@ -87,7 +96,6 @@ dependencies {
     implementation deps.retrofit.adapter
     implementation deps.retrofit.converterGsonVersion
     implementation deps.retrofit.converterScalarsVersion
-
     implementation deps.okhttp
     implementation deps.okhttp_logging_interceptor
     implementation deps.mqtt
@@ -96,14 +104,11 @@ dependencies {
     implementation deps.spinkit
     implementation deps.eventbus
     implementation deps.commonslang
-
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'io.netty:netty-all:4.1.16.Final'
     implementation 'com.kyleduo.switchbutton:library:2.0.0'
     implementation 'com.hikvision.ezviz:ezuikit:2.0'
-
     implementation 'commons-lang:commons-lang:2.6'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }
