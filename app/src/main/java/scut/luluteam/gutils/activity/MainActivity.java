@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.google.gson.Gson;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,16 +24,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import scut.luluteam.gutils.R;
 import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
-import scut.luluteam.gutils.activity.test.FirstActivity;
-import scut.luluteam.gutils.activity.video.PlayActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
-import scut.luluteam.gutils.model.UserResult;
 import scut.luluteam.gutils.service.DownUploadService;
 import scut.luluteam.gutils.service.UpdateService;
 import scut.luluteam.gutils.service.floatwindow.FloatWinService;
@@ -49,7 +44,6 @@ import scut.luluteam.gutils.utils.UriUtil;
 import scut.luluteam.gutils.utils.headmsg.HeadMsgManager;
 import scut.luluteam.gutils.utils.headmsg.HeadsMsg;
 import scut.luluteam.gutils.utils.http.AsyncHttpURLConnection;
-import scut.luluteam.gutils.utils.http.retrofit.RetrofitUtil;
 import scut.luluteam.gutils.utils.lock_screen.DeviceManager;
 import scut.luluteam.gutils.utils.screen_shot.ScreenShotActivity;
 import scut.luluteam.gutils.view.G_AlertDialog;

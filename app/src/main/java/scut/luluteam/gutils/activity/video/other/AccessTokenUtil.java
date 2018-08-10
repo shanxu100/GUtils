@@ -13,7 +13,6 @@ import java.util.HashMap;
 import scut.luluteam.gutils.activity.video.model.AccessTokenResult;
 import scut.luluteam.gutils.utils.SharedPreferencesUtil;
 import scut.luluteam.gutils.utils.ShowUtil;
-import scut.luluteam.gutils.utils.ToastUtil;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
 /**

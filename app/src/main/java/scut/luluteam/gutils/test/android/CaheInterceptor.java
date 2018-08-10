@@ -3,7 +3,6 @@ package scut.luluteam.gutils.test.android;
 import android.content.Context;
 import android.util.Log;
 
-
 import java.io.IOException;
 
 import okhttp3.CacheControl;
@@ -12,7 +11,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import scut.luluteam.gutils.utils.ShowUtil;
 import scut.luluteam.gutils.utils.http.NetworkUtil;
-import scut.luluteam.gutils.utils.ToastUtil;
 
 /**
  * caheInterceptor

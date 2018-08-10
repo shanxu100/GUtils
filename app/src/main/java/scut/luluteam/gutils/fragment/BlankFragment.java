@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import scut.luluteam.gutils.R;
-import scut.luluteam.gutils.activity.test.FirstActivity;
 import scut.luluteam.gutils.app.BaseFragment;
 import scut.luluteam.gutils.utils.http.retrofit.RetrofitUtil;
 

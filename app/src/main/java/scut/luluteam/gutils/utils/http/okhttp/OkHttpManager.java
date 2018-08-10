@@ -1,6 +1,5 @@
 package scut.luluteam.gutils.utils.http.okhttp;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;

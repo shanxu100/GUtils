@@ -1,20 +1,12 @@
 package scut.luluteam.gutils.activity.video.webview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
-
-import scut.luluteam.gutils.activity.video.WebVideoActivity;
 
 /**
  * @author Guan

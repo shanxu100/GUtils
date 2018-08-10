@@ -12,8 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

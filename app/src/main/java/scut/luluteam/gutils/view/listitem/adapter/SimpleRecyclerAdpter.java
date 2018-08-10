@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-
-
 import java.util.List;
 
 import scut.luluteam.gutils.R;
@@ -24,6 +22,8 @@ import static scut.luluteam.gutils.view.listitem.holder.SimpleViewHolder.TYPE_NO
 
 /**
  * ListView样式，显示单一数据元素
+ *
+ * TODO: 添加点击事件、局部刷新
  *
  * @param <T>
  */

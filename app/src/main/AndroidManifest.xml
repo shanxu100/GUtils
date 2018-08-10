@@ -34,7 +34,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -51,13 +50,11 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <service
@@ -147,8 +144,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity
-            android:name=".activity.test.FirstActivity" />
+        <activity android:name=".activity.test.FirstActivity" />
         <activity
             android:name=".activity.test.SecondActivity"
             android:launchMode="singleTask" />
@@ -186,13 +182,19 @@
 
         <activity android:name=".activity.databinding.BindingActivity" />
         <activity android:name=".activity.video.VideoMainActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.video.WebVideoActivity"></activity>
+        <activity android:name=".activity.video.WebVideoActivity" />
+
+        <service
+            android:name=".service.MyIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

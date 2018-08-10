@@ -1,20 +1,5 @@
 package scut.luluteam.gutils.activity.video.other;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-
-import com.google.gson.Gson;
-
-import org.apache.commons.lang.StringUtils;
-
-import java.util.HashMap;
-
-import io.netty.util.internal.StringUtil;
-import scut.luluteam.gutils.activity.video.model.AccessTokenResult;
-import scut.luluteam.gutils.utils.SharedPreferencesUtil;
-import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
-
 /**
  * @author Guan
  * @date Created on 2018/5/28

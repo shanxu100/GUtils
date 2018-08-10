@@ -3,7 +3,6 @@ package scut.luluteam.gutils.activity.video.webview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
-import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;

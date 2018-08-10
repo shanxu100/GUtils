@@ -1,19 +1,14 @@
 package scut.luluteam.gutils.utils.http.retrofit;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;

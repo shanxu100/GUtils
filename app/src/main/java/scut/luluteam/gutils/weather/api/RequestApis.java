@@ -1,10 +1,8 @@
 package scut.luluteam.gutils.weather.api;
 
 
-
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 import scut.luluteam.gutils.weather.bean.Response;
 
