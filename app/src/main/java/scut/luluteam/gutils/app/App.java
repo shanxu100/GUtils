@@ -6,6 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import java.io.File;
 
 import scut.luluteam.gutils.utils.DisplayUtil;
@@ -71,6 +73,7 @@ public class App extends Application {
 //        Intent mqttIntent = new Intent(appContext, MQTTService.class);
 //        startService(mqttIntent);
 
+        LeakCanary.install(this);
 
     }
 

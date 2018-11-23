@@ -110,5 +110,10 @@ dependencies {
     implementation 'com.kyleduo.switchbutton:library:2.0.0'
     implementation 'com.hikvision.ezviz:ezuikit:2.0'
     implementation 'commons-lang:commons-lang:2.6'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6'
+
+
+
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }
