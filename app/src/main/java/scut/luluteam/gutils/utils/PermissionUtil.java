@@ -1,16 +1,17 @@
 package scut.luluteam.gutils.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,10 +21,16 @@ import java.util.List;
 public class PermissionUtil {
 
     private static final String TAG = "PermissionUtil";
+    private static final String REQUEST_PERMISSION_MSG = "保证应用正常运行，请授予相关权限";
 
     private PermissionUtil() {
         throw new AssertionError("PermissionUtil");
     }
+
+
+    //==========================================================================================
+    //region 权限检查相关方法
+    //==========================================================================================
 
     /**
      * 检测单个权限是否授权
@@ -49,20 +56,32 @@ public class PermissionUtil {
     public static boolean checkPermission(Context mContext, String[] permissions) {
         boolean result = true;
         for (String permission : permissions) {
-            result=checkPermission(mContext, permission);
+            result = checkPermission(mContext, permission);
         }
         return result;
     }
 
 
     /**
-     * 检测多个权限是否授权
+     * 检测多个权限是否授权，并返回未授权的权限列表
      *
      * @param mContext
      * @param permissions 数组模式
      * @return 未授权的权限字符串
      */
-    public static List<String> checkMultiPermission(Context mContext, String[] permissions) {
+    public static List<String> getNotGrantPermissions(Context mContext, String[] permissions) {
+        return getNotGrantPermissions(mContext, Arrays.asList(permissions));
+    }
+
+    /**
+     * 检测多个权限是否授权，并返回未授权的权限列表
+     *
+     * @param mContext
+     * @param permissions 列表模式
+     * @return 未授权的权限字符串
+     */
+    public static List<String> getNotGrantPermissions(Context mContext, List<String> permissions) {
+
         List<String> permissionList = new ArrayList<>();
         for (String permission : permissions) {
             if (!checkPermission(mContext, permission)) {
@@ -73,16 +92,29 @@ public class PermissionUtil {
     }
 
     /**
-     * 检测多个权限是否授权
+     * 检查 系统App 拥有的权限
+     * 如：android:get_usage_stats
      *
-     * @param mContext
-     * @param permissions 列表模式
-     * @return 未授权的权限字符串
+     * @param context
+     * @param op
+     * @return
      */
-    public static List<String> checkMultiPermission(Context mContext, List<String> permissions) {
-        String[] perArr = permissions.toArray(new String[permissions.size()]);
-        return checkMultiPermission(mContext, perArr);
+    public static boolean checkSystemAppPermission(Context context, String op) {
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(op, android.os.Process.myUid(), context.getPackageName());
+        boolean result = (mode == AppOpsManager.MODE_ALLOWED);
+        if (result) {
+            Log.e(TAG, "已经授予权限permission:" + op);
+        } else {
+            Log.e(TAG, "未授予权限permission:" + op);
+        }
+        return result;
     }
+
+    //==================================================================================
+    //endregion权限检查方法结束,
+    // region权限申请方法开始
+    //==================================================================================
 
     /**
      * 请求单个权限
@@ -117,134 +149,33 @@ public class PermissionUtil {
         requestPermission(mContext, permissions.toArray(new String[permissions.size()]), requestCode);
     }
 
+    //==================================================================================
+    //endregion 权限申请方法结束权限其他方法开始
+    //==================================================================================
+
+
     /**
-     * 判断用户过去是否禁止了该权限
+     * 向用户解释为什么需要申请权限
+     * 返回false：表示用户之前彻底禁止了该权限
+     * 返回true：如果用户之前只是拒绝了该权限，那么会弹出dialog，向用户解释
      *
      * @param mContext
      * @param permission
-     * @return 如果用户彻底禁止了该权限，返回true;如果用户只是拒绝了该权限，那么返回false
+     * @return
      */
-    public static boolean judgeRefusePermission(Context mContext, String permission) {
+    public static boolean showRequestPermissionRationale(Context mContext, String permission) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, permission)) {
-            return false;
+            new AlertDialog.Builder(mContext)
+                    .setMessage(REQUEST_PERMISSION_MSG)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+            return true;
         }
-        return true;
+        return false;
     }
 
-    /**
-     * 检测并请求多个权限
-     *
-     * @param mContext
-     * @param permissions
-     * @param requestCode
-     */
-    public static void checkAndRequestPermission(Context mContext, String[] permissions, int requestCode) {
-        List<String> perList = checkMultiPermission(mContext, permissions);
-        if (!perList.isEmpty()) {
-            requestPermission(mContext, perList, requestCode);
-        }
-    }
-
-    /**
-     * 检测并请求单个权限
-     *
-     * @param mContext
-     * @param permission
-     * @param requestCode
-     */
-    public static void checkAndRequestPermission(Context mContext, String permission, int requestCode) {
-        checkAndRequestPermission(mContext, new String[]{permission}, requestCode);
-    }
-
-    /**
-     * 检测并请求多个权限,并且在全部权限都允许之后，调用回调函数
-     *
-     * @param mContext
-     * @param permissions
-     * @param requestCode
-     * @param callBack
-     */
-    public static void checkAndRequestPermission(Context mContext, String[] permissions, int requestCode, RequestPermissionSeccessCallBack callBack) {
-        List<String> perList = checkMultiPermission(mContext, permissions);
-        if (!perList.isEmpty()) {
-            requestPermission(mContext, perList, requestCode);
-            //权限全部被允许后
-            if (checkMultiPermission(mContext, perList).isEmpty()) {
-                callBack.onSeccess();
-            }
-        }
-    }
-
-    public static void onRequestPermissionsResult(Context mContext, String[] permissions, int[] grantResults, CheckPermissionsCallBack callBack) {
-        List<String> permitList = new ArrayList<>();
-        List<String> deniedList = new ArrayList<>();
-        //记录是否有权限被彻底禁止
-        boolean hasBannedPermission = false;
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                permitList.add(permissions[i]);
-            } else {
-                deniedList.add(permissions[i]);
-            }
-        }
-        //如果有被禁止的权限，判断其中有无完全被禁止的
-        if (!deniedList.isEmpty()) {
-            for (String denied : deniedList) {
-                if (judgeRefusePermission(mContext, denied)) {
-                    hasBannedPermission = true;
-                    break;
-                }
-            }
-            callBack.onDeniedPermission();
-        } else {
-            callBack.onHasPermission();
-        }
-        if (hasBannedPermission) {
-            callBack.onDeniedAndRefusedPermission();
-        }
-    }
-
-    /**
-     * 跳转到设置界面
-     *
-     * @param mContext
-     */
-    public static void toAppSetting(Context mContext) {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 9) {
-            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-            intent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
-        } else if (Build.VERSION.SDK_INT <= 8) {
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-            intent.putExtra("com.android.settings.ApplicationPkgName", mContext.getPackageName());
-        }
-        mContext.startActivity(intent);
-    }
-
-
-    /**
-     * 检查权限时的回调接口
-     */
-    public interface CheckPermissionsCallBack {
-        /**
-         * 申请权限成功后执行
-         */
-        void onHasPermission();
-
-        /**
-         * 未授权但并没有彻底禁止
-         */
-        void onDeniedPermission();
-
-        /**
-         * 未授权并且已经彻底禁止
-         */
-        void onDeniedAndRefusedPermission();
-    }
-
-    public interface RequestPermissionSeccessCallBack {
-        void onSeccess();
-    }
 }
