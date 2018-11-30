@@ -137,7 +137,7 @@ public class FloatWinService extends Service {
         int type = WindowManager.LayoutParams.TYPE_TOAST;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             //Android 4.4以下不支持
-            ShowUtil.UIToast("本悬浮窗只适配于API Level 19及以上系统。当前API Level: " + Build.VERSION.SDK_INT);
+            ShowUtil.Toast("本悬浮窗只适配于API Level 19及以上系统。当前API Level: " + Build.VERSION.SDK_INT);
             stopSelf();
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             //Android 7.1.1及以上不支持将type设置为toast，所以更改type

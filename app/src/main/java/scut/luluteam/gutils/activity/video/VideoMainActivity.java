@@ -92,7 +92,7 @@ public class VideoMainActivity extends BaseActivity {
                             cameraListResult = new Gson().fromJson(result, CameraListResult.class);
                             refreshVideoList(cameraListResult);
                         } else {
-                            ShowUtil.UIToast(mContext, "获取设备列表失败：" + result);
+                            ShowUtil.Toast(mContext, "获取设备列表失败：" + result);
                         }
                     }
                 });

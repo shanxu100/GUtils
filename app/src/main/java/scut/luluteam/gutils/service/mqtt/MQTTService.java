@@ -202,7 +202,7 @@ public class MQTTService extends Service {
         private void startMQTT() {
             //检查状态
             if (currentState != MQTTState.STOPPED) {
-                ShowUtil.UIToast("MQTT Service is running. Do not start again.");
+                ShowUtil.Toast("MQTT Service is running. Do not start again.");
                 return;
             }
 
@@ -230,7 +230,7 @@ public class MQTTService extends Service {
                     Log.e(TAG, "信消息到达\tmessageArrived:\t" +
                             "topic -- " + topic + "\t" +
                             "message -- " + message);
-                    //ShowUtil.UIToast(context, message.toString());
+                    //ShowUtil.Toast(context, message.toString());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -279,7 +279,7 @@ public class MQTTService extends Service {
             if (currentState != MQTTState.RECONNECTING) {
                 return;
             }
-            ShowUtil.UIToast("Mqtt连接已断开，正在重连……");
+            ShowUtil.Toast("Mqtt连接已断开，正在重连……");
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -288,7 +288,7 @@ public class MQTTService extends Service {
                         if (!mqttClient.isConnected()) {
                             return;
                         }
-                        ShowUtil.UIToast("Mqtt 连接成功");
+                        ShowUtil.Toast("Mqtt 连接成功");
                         mqttClient.subscribe(Topics, Qoses);
                         currentState = MQTTState.RUNNING;
                         //EventBus.getDefault().post(new EventBusMessage(EventBusMessage.EventBusMessageType.NETWORKONLINE));
@@ -330,7 +330,7 @@ public class MQTTService extends Service {
         private void sendMessage(final String topic, final String json) {
 
             if (currentState != MQTTState.RUNNING) {
-                ShowUtil.UIToast("Mqtt Server is not running.");
+                ShowUtil.Toast("Mqtt Server is not running.");
                 return;
             }
 

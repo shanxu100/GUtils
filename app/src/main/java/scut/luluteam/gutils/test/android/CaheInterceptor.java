@@ -39,7 +39,7 @@ public class CaheInterceptor implements Interceptor {
                     .header("Cache-Control", "public, max-age=" + maxAge)
                     .build();
         } else {
-            ShowUtil.UIToast(context,"当前无网络! 为你智能加载缓存");
+            ShowUtil.Toast(context,"当前无网络! 为你智能加载缓存");
             Log.e("Tamic", " no network load cahe");
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)

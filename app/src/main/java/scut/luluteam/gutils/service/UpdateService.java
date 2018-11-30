@@ -75,7 +75,7 @@ public class UpdateService extends Service {
      */
     private void checkUpdate() {
         Log.e(TAG, " App.getVersionCode()=" + App.getVersionCode());
-//        ShowUtil.UIToast(getApplicationContext(), "正在检查更新...");
+//        ShowUtil.Toast(getApplicationContext(), "正在检查更新...");
         OkHttpManager.CommonGetAsyn(CheckURL, null, new OkHttpManager.ResultCallback() {
             @Override
             public void onCallBack(OkHttpManager.State state, String result) {
@@ -92,7 +92,7 @@ public class UpdateService extends Service {
                     } else {
                     }
                 } else {
-                    ShowUtil.UIToast(getApplicationContext(), "操作失败：" + result);
+                    ShowUtil.Toast(getApplicationContext(), "操作失败：" + result);
                 }
             }
         });
@@ -132,7 +132,7 @@ public class UpdateService extends Service {
      * 执行更新的动作
      */
     private void doUpdate(CheckUpdateResult checkUpdateResult) {
-        ShowUtil.UIToast(getApplicationContext(), "开始下载更新...");
+        ShowUtil.Toast(getApplicationContext(), "开始下载更新...");
         final LoadingDialog loadingDialog = new LoadingDialog(AppManager.getInstance().currentActivity());
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
@@ -162,7 +162,7 @@ public class UpdateService extends Service {
                         @Override
                         public void run() {
                             loadingDialog.dismiss();
-                            ShowUtil.UIToast(getApplicationContext(), "下载更新失败..." + result);
+                            ShowUtil.Toast(getApplicationContext(), "下载更新失败..." + result);
                         }
                     });
 

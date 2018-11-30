@@ -134,7 +134,7 @@ public class DeviceManager {
             // 已经获取管理员权限可以锁屏
             mDPM.lockNow();
         } else {
-            ShowUtil.UIToast("操作失败，请先开通管理员权限");
+            ShowUtil.Toast("操作失败，请先开通管理员权限");
         }
     }
 

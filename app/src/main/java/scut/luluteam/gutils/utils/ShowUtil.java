@@ -15,7 +15,7 @@ import scut.luluteam.gutils.app.App;
 
 public class ShowUtil {
 
-    private static Toast logToast;
+    private static Toast toast;
 
     private static Handler handler;
 
@@ -31,21 +31,27 @@ public class ShowUtil {
      * @param context
      * @param msg
      */
-    public static void UIToast(final Context context, final String msg) {
+    public static void Toast(final Context context, final String msg) {
+        //记录日志
         String TAG = context.getClass().getSimpleName();
         Log.e(TAG, msg);
 
         if (handler == null) {
-            handler = new Handler(Looper.getMainLooper());
+            synchronized (ShowUtil.class) {
+                if (handler == null) {
+                    handler = new Handler(Looper.getMainLooper());
+                }
+            }
         }
+        //在主线程中显示Toast
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (logToast != null) {
-                    logToast.cancel();
+                if (toast != null) {
+                    toast.cancel();
                 }
-                logToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-                logToast.show();
+                toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -56,8 +62,8 @@ public class ShowUtil {
      *
      * @param msg
      */
-    public static void UIToast(final String msg) {
-        UIToast(App.getAppContext(), msg);
+    public static void Toast(final String msg) {
+        Toast(App.getAppContext(), msg);
     }
 
 

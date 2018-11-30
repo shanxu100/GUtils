@@ -70,9 +70,9 @@ public class LoadingDialog extends Dialog {
                     callback.onCancelLoading();
                     this.dismiss();
                 }
-                ShowUtil.UIToast(mContext, "正在加载，请勿取消……");
+                ShowUtil.Toast(mContext, "正在加载，请勿取消……");
             } else {
-                ShowUtil.UIToast(mContext, "再按一次取消加载……");
+                ShowUtil.Toast(mContext, "再按一次取消加载……");
             }
             return true;
         } else {

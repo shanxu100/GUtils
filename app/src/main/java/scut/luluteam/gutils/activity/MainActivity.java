@@ -237,7 +237,7 @@ public class MainActivity extends BaseActivity {
         inputDialog.setCallback(new G_InputDialog.InputDialogCallback() {
             @Override
             public void onPositive(String s) {
-                ShowUtil.UIToast(mContext, s);
+                ShowUtil.Toast(mContext, s);
                 inputDialog.dismiss();
             }
 
@@ -351,7 +351,7 @@ public class MainActivity extends BaseActivity {
     public void testPermission() {
         int hasPermission = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-            ShowUtil.UIToast("权限未赋予");
+            ShowUtil.Toast("权限未赋予");
             /**
              * 弹出在其他应用上显示的设置页面
              */

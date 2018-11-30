@@ -89,7 +89,7 @@ public class SocketDemoActivity extends BaseActivity implements Runnable {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-            ShowUtil.UIToast(mContext,"login exception" + ex.getMessage());
+            ShowUtil.Toast(mContext,"login exception" + ex.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

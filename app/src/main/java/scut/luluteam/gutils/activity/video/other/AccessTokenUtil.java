@@ -50,7 +50,7 @@ public class AccessTokenUtil {
                                     Log.i(TAG, "获取accessToken成功:" + result);
                                 }
                             } else {
-                                ShowUtil.UIToast(context, "获取AccessToken失败:" + result);
+                                ShowUtil.Toast(context, "获取AccessToken失败:" + result);
                             }
                         }
                     });

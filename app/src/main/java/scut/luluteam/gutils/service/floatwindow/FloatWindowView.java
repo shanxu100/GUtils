@@ -83,7 +83,7 @@ public class FloatWindowView {
             second_btn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShowUtil.UIToast("balabala");
+                    ShowUtil.Toast("balabala");
                 }
             });
         }
