@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.view.MotionEvent;
 
 /**
- * Created by guan on 3/14/17.
+ *
+ * @author guan
+ * @date 3/14/17
  */
 
 public class ClickUtil {

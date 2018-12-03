@@ -18,6 +18,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import scut.luluteam.gutils.utils.http.okhttp.OkHttpManager;
 
 
+
+/**
+ * @date 2018-12-03
+ * @author Guan
+ */
 public class RetrofitUtil {
 
     private static final String TAG = "RetrofitUtil";
