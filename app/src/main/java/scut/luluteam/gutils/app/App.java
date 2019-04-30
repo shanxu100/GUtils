@@ -6,7 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 
-import com.squareup.leakcanary.LeakCanary;
+
 
 import java.io.File;
 
@@ -41,12 +41,6 @@ public class App extends Application {
 
     private void initApp() {
 
-        /**
-         * APM
-         */
-//        APMInstance apmInstance = APMInstance.getInstance();	//得到单例对象
-//        apmInstance.setSendStrategy(APMInstance.SEND_INSTANTLY);	//选择上报策略
-//        apmInstance.start(this);	//开始监控
 
         /**
          * 保存屏幕尺寸
@@ -73,7 +67,7 @@ public class App extends Application {
 //        Intent mqttIntent = new Intent(appContext, MQTTService.class);
 //        startService(mqttIntent);
 
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
     }
 
@@ -102,6 +96,7 @@ public class App extends Application {
 
     /**
      * 获取版本名
+     *
      * @return
      */
     public static String getVersionName()//获取版本号

@@ -1,7 +1,7 @@
 package scut.luluteam.gutils.app;
 
-import android.support.v4.app.Fragment;
 
+import android.support.v4.app.Fragment;
 
 /**
  * Created by guan on 6/20/17.

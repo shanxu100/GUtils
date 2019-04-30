@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity {
         test2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testMqttPublish_true();
+                testHTTPProxy();
             }
         });
 
@@ -183,7 +184,6 @@ public class MainActivity extends BaseActivity {
     }
 
 //===========================================================================================
-
 
 
     private void testSwitchDialog() {
@@ -395,9 +395,15 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void testIOSocket() {
-        Intent intent = new Intent(this, SocketService.class);
-        startService(intent);
+    /**
+     * 测试itest的http
+     */
+    private void testHTTPProxy() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void testSendSocketMsg() {

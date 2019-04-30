@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "scut.luluteam.gutils"
         minSdkVersion 21
@@ -111,7 +110,9 @@ dependencies {
     implementation 'com.hikvision.ezviz:ezuikit:2.0'
     implementation 'commons-lang:commons-lang:2.6'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6'
+
+//    implementation 'com.itest:apmlib:1.1.6'
 
 
 
