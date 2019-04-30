@@ -117,4 +117,5 @@ dependencies {
 
 
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+    implementation project(path: ':SerialPortLibrary')
 }

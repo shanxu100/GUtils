@@ -1,0 +1,44 @@
+申请获取管理员权限
+
+1、在Manifest文件中设置Receiver
+
+        <receiver
+            android:name=".utils.DeviceAdmin.MyDeviceAdminReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_policy" />
+            <intent-filter>
+                <!-- 申请管理员权限 -->
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+
+2、在res文件夹中添加文件“res/xml/device_policy.xml”
+
+<device-admin>
+    <uses-policies>
+        <force-lock />
+        <!--强制锁屏-->
+        <limit-password />
+        <!--设置密码规则-->
+        <watch-login />
+        <!--监控屏幕解锁尝试次数-->
+        <reset-password />
+        <!--更改屏幕解锁密码-->
+        <force-lock />
+        <!--设备自动解锁-->
+        <wipe-data />
+        <!--清除数据-->
+        <expire-password />
+        <!--激活密码-->
+        <encrypted-storage />
+        <!--数据加密-->
+        <disable-camera />
+        <!--禁用摄像头-->
+    </uses-policies>
+</device-admin>
+

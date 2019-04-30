@@ -1,0 +1,8 @@
+
+1、对于接收到的数据调用FrameManger#put()方法入队
+
+2、修改FrameManager#takeCustomFrame2()做具体的协议解析，识别数据帧
+
+3、修改CustomFrame#decode()方法，将数据帧封装成对象
+
+4、在FrameProcessor#onMessage()方法中做业务处理
