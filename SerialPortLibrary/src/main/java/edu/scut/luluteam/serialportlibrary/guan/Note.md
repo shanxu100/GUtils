@@ -1,0 +1,17 @@
+android中有了handler还需要thread吗?
+比如在SerialPortManager中，串口读的数据会放到inputstream中。mSerialPortReadThread线程负责不断的将
+inputstream中的数据读出来并处理。当发送数据时，却创建了Handler+HandlerThread，在另一个线程中调用发送
+的方法向串口写数据。那么为什么读数据的时候不用Handler呢？
+使用Handler可以实现在另一个线程处理message。当然可以处理将inputstream中读出的数据交给handler处理。
+但是，inputstream中的数据需要一个while()循环不断的读。这个动作不能在主线程中处理，需要一个新线程来做。
+所以SerialPortReadThread应运而生。因为SerialPortReadThread并非主线程，所以读出来的数据也无需handler
+交给另一线程处理，自己这个线程处理就好。
+
+反过来问，为什么写数据的时候不new一个Thread呢？
+当然可以new一个Thread。比如每次要发数据，可以new一个Thread，但这样效率不高，因为这样会频繁的创建和销毁Thread。
+也可以使用ThreadPool，创建只有一个线程的线程池。。。。。
+或者只启动一个Thread，当收到发送的Message的时候，使用Handler向该Thread进行通信，然后再发送。
+
+又产生了一个新问题：Handler和ThreadPool什么关系和区别？
+Handler是一种线程间的通信方式，连接着两个线程。线程池是负责管理和调度若干未死亡的线程，避免频繁
+创建和销毁线程造成的开销。

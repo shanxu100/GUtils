@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scut.luluteam.gutils.R;
+import scut.luluteam.gutils.activity.Rotation.RotationActivity;
 import scut.luluteam.gutils.activity.tab.OnlyTabActivity;
 import scut.luluteam.gutils.app.BaseActivity;
 import scut.luluteam.gutils.model.EventBusMessage;
@@ -102,7 +102,8 @@ public class MainActivity extends BaseActivity {
         test2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testHTTPProxy();
+                Intent intent = new Intent(MainActivity.this, RotationActivity.class);
+                startActivity(intent);
             }
         });
 
